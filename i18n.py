@@ -18,6 +18,8 @@ TRANSLATIONS = {
         "tray_show": "显示主界面",
         "tray_quit": "退出",
         "tray_minimized": "程序已最小化到托盘",
+        "dialog_close_running_title": "任务正在进行",
+        "dialog_close_running_message": "关闭窗口会停止当前任务，未完成的文件会保留中间结果。确定要退出吗？",
 
         # === Tab Names (navigation) ===
         "tab_about": "关于",
@@ -66,6 +68,7 @@ TRANSLATIONS = {
 
         # === Input/Output Tab ===
         "io_input_label": "📥 输入文件或链接",
+        "io_add_files_btn": "添加文件",
         "io_input_tip": "支持拖拽音视频或SRT文件，也可每行输入一个B站BV号、YouTube或其他视频链接。",
         "io_input_placeholder": "例如：C:/video.mp4或https://www.youtube.com/watch?v=...或BV1Lxt5e8EJF",
         "io_transcription_group_title": "🎙️ 听写设置",
@@ -244,6 +247,7 @@ TRANSLATIONS = {
 
         # === File Dialogs ===
         "dialog_select_video": "选择视频文件",
+        "dialog_select_input_files": "选择视频、音频或字幕文件",
         "dialog_select_subtitle": "选择字幕文件",
         "dialog_select_output_dir": "选择输出目录",
 
@@ -324,6 +328,8 @@ TRANSLATIONS = {
         "status_processing_done": "[INFO] 文件处理完成！",
         "status_uvr_model_error": "[ERROR] 请选择正确的UVR模型文件！",
         "status_file_not_exist": "[ERROR] {file}文件不存在，请重新选择文件！",
+        "status_process_failed": "[ERROR] {file} 处理失败（退出码 {code}），已跳过该文件。",
+        "status_file_processing_error": "[ERROR] {file} 处理失败：{error}，已跳过该文件。",
         "status_synth_mismatch": "[ERROR] 字幕文件和视频文件数量不匹配，请重新选择文件！",
         "status_synth_processing": "[INFO] 当前处理文件：{file} 第{idx}个，共{total}个",
         "status_synth_font": "[INFO] 使用字幕字体：{font}",
@@ -374,6 +380,8 @@ TRANSLATIONS = {
         "tray_show": "Show Main Window",
         "tray_quit": "Quit",
         "tray_minimized": "Program minimized to tray",
+        "dialog_close_running_title": "Task in progress",
+        "dialog_close_running_message": "Closing the window stops the current task. Intermediate files are kept. Quit anyway?",
 
         # === Tab Names (navigation) ===
         "tab_about": "About",
@@ -424,6 +432,7 @@ TRANSLATIONS = {
 
         # === Input/Output Tab ===
         "io_input_label": "📥 Files or Links",
+        "io_add_files_btn": "Add Files",
         "io_input_tip": "Drop audio, video, or SRT files, or enter one Bilibili BV ID, YouTube URL, or other video link per line.",
         "io_input_placeholder": "Example: C:/video.mp4 or https://www.youtube.com/watch?v=... or BV1Lxt5e8EJF",
         "io_transcription_group_title": "🎙️ Transcription",
@@ -602,6 +611,7 @@ TRANSLATIONS = {
 
         # === File Dialogs ===
         "dialog_select_video": "Select Video Files",
+        "dialog_select_input_files": "Select video, audio, or subtitle files",
         "dialog_select_subtitle": "Select Subtitle Files",
         "dialog_select_output_dir": "Select Output Directory",
 
@@ -682,6 +692,8 @@ TRANSLATIONS = {
         "status_processing_done": "[INFO] File processing complete!",
         "status_uvr_model_error": "[ERROR] Please select a valid UVR model file!",
         "status_file_not_exist": "[ERROR] File {file} does not exist, please re-select!",
+        "status_process_failed": "[ERROR] Failed to process {file} (exit code {code}); skipped.",
+        "status_file_processing_error": "[ERROR] Failed to process {file}: {error}; skipped.",
         "status_synth_mismatch": "[ERROR] Subtitle and video file counts do not match, please re-select!",
         "status_synth_processing": "[INFO] Processing file: {file} ({idx}/{total})",
         "status_synth_font": "[INFO] Using subtitle font: {font}",
@@ -732,6 +744,8 @@ TRANSLATIONS = {
         "tray_show": "メイン画面を表示",
         "tray_quit": "終了",
         "tray_minimized": "プログラムをトレイに最小化しました",
+        "dialog_close_running_title": "タスクを実行中",
+        "dialog_close_running_message": "ウィンドウを閉じると現在のタスクを停止します。中間ファイルは保持されます。終了しますか？",
 
         # === Tab Names (navigation) ===
         "tab_about": "概要",
@@ -781,6 +795,7 @@ TRANSLATIONS = {
 
         # === Input/Output Tab ===
         "io_input_label": "📥 ファイルまたはリンク",
+        "io_add_files_btn": "ファイルを追加",
         "io_input_tip": "音声・動画・SRTをドロップするか、BilibiliのBV番号、YouTubeなどの動画リンクを1行ずつ入力します。",
         "io_input_placeholder": "例：C:/video.mp4 または https://www.youtube.com/watch?v=... または BV1Lxt5e8EJF",
         "io_transcription_group_title": "🎙️ 文字起こし設定",
@@ -959,6 +974,7 @@ TRANSLATIONS = {
 
         # === File Dialogs ===
         "dialog_select_video": "動画ファイルを選択",
+        "dialog_select_input_files": "動画・音声・字幕ファイルを選択",
         "dialog_select_subtitle": "字幕ファイルを選択",
         "dialog_select_output_dir": "出力ディレクトリを選択",
 
@@ -1039,6 +1055,8 @@ TRANSLATIONS = {
         "status_processing_done": "[INFO] ファイル処理完了！",
         "status_uvr_model_error": "[ERROR] 有効なUVRモデルファイルを選択してください！",
         "status_file_not_exist": "[ERROR] ファイル {file} が存在しません。再選択してください！",
+        "status_process_failed": "[ERROR] {file} の処理に失敗しました（終了コード {code}）。このファイルをスキップしました。",
+        "status_file_processing_error": "[ERROR] {file} の処理に失敗しました：{error}。このファイルをスキップしました。",
         "status_synth_mismatch": "[ERROR] 字幕ファイルと動画ファイルの数が一致しません。再選択してください！",
         "status_synth_processing": "[INFO] 処理中ファイル：{file} （{idx}/{total}）",
         "status_synth_font": "[INFO] 字幕フォントを使用：{font}",

@@ -15,11 +15,14 @@ from app import (
     UIMessageQueue,
     MainWindow,
     _TranslationLogParser,
+    _atomic_write_text,
     _clean_control_chars,
+    _clip_output_path,
     _compose_output_format,
     _decode_subprocess_line,
     _find_available_local_port,
     _line_passes_filter,
+    _sanitize_download_title,
     _set_command_option,
     _split_command_template,
     _split_output_format,
@@ -65,6 +68,42 @@ class AppFormattingTests(unittest.TestCase):
         port = _find_available_local_port()
         self.assertGreater(port, 0)
         self.assertLessEqual(port, 65535)
+
+
+class FileHelperTests(unittest.TestCase):
+    def test_atomic_write_text_creates_parent_and_replaces_content(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "nested" / "settings.yaml"
+            _atomic_write_text(str(path), "first\n")
+            _atomic_write_text(str(path), "second\n")
+
+            self.assertEqual(path.read_text(encoding="utf-8"), "second\n")
+            self.assertEqual(list(path.parent.glob(".tmp-*")), [])
+
+    def test_atomic_write_text_keeps_original_when_replace_fails(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "settings.yaml"
+            path.write_text("original\n", encoding="utf-8")
+
+            with patch("app.os.replace", side_effect=OSError("locked")):
+                with self.assertRaises(OSError):
+                    _atomic_write_text(str(path), "updated\n")
+
+            self.assertEqual(path.read_text(encoding="utf-8"), "original\n")
+            self.assertEqual(list(path.parent.glob(".tmp-*")), [])
+
+    def test_clip_output_path_keeps_dots_inside_filename(self):
+        self.assertEqual(
+            _clip_output_path("media/a.b.mkv"),
+            str(Path("media") / "a.b_clip.mkv"),
+        )
+
+    def test_sanitize_download_title_matches_downloader_naming(self):
+        self.assertEqual(
+            _sanitize_download_title('  a:b?c/d\\e.f  '),
+            "a b c d e f",
+        )
+        self.assertEqual(_sanitize_download_title('??'), "")
 
 
 class MessageQueueAndLogParserTests(unittest.TestCase):
@@ -132,6 +171,16 @@ class TaskLifecycleTests(unittest.TestCase):
         def setEnabled(self, enabled):
             self.enabled = enabled
 
+    class Progress:
+        def __init__(self):
+            self.visible = False
+
+        def show(self):
+            self.visible = True
+
+        def hide(self):
+            self.visible = False
+
     class Thread:
         def __init__(self):
             self.started = TaskLifecycleTests.Signal()
@@ -188,6 +237,7 @@ class TaskLifecycleTests(unittest.TestCase):
             self._cancel_requested = False
             self._button_mirrors = []
             self.cancel_button = TaskLifecycleTests.Button(False)
+            self.task_progress = TaskLifecycleTests.Progress()
             self.messages = []
 
         def _emit_status(self, message):

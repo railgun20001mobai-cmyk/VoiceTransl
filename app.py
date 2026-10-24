@@ -36,11 +36,11 @@ def _resolve_ffmpeg() -> tuple[str, str]:
 _FFMPEG, _FFPROBE = _resolve_ffmpeg()
 from i18n import _, set_language, get_language
 from PyQt5 import QtGui, QtCore
-from PyQt5.QtCore import Qt, QThread, QObject, pyqtSignal, QTimer, QDateTime, QSize
+from PyQt5.QtCore import Qt, QThread, QObject, pyqtSignal, QTimer, QDateTime, QSize, QSettings
 from PyQt5.QtWidgets import (
     QApplication, QVBoxLayout, QFileDialog, QFrame, QSystemTrayIcon, QMenu,
     QAction, QHBoxLayout, QCheckBox, QDialog, QLabel, QWidget, QLayout,
-    QStackedWidget,
+    QStackedWidget, QProgressBar, QMessageBox,
 )
 from qfluentwidgets import PushButton as QPushButton, TextEdit as QTextEdit, LineEdit as QLineEdit, ComboBox as QComboBox, Slider as QSlider, PlainTextEdit as QPlainTextEdit, SplashScreen, SpinBox as QSpinBox
 from qfluentwidgets import (
@@ -371,6 +371,17 @@ def _split_output_format(output_format):
         if output_format.endswith(file_type):
             return output_format[:-len(file_type)], file_type
     return output_format, ''
+
+
+def _clip_output_path(input_file: str) -> str:
+    path = Path(input_file)
+    return str(path.with_name(f"{path.stem}_clip{path.suffix}"))
+
+
+def _sanitize_download_title(title: str) -> str:
+    # Keep in sync with bilibili_dl.downloader, which names the downloaded file.
+    title = re.sub(r'[.:?/\\]', ' ', title)
+    return re.sub(r'\s+', ' ', title).strip()
 
 # redirect sys.stdout and sys.stderr to one log file
 LOG_PATH = 'log.log'
@@ -1234,10 +1245,27 @@ def _load_api_key() -> str:
     return ''
 
 
+def _atomic_write_text(path: str, text: str) -> None:
+    """Write a file in the same directory and swap it in, so a crash cannot truncate it."""
+    target = os.path.abspath(path)
+    directory = os.path.dirname(target)
+    os.makedirs(directory, exist_ok=True)
+    fd, temp_path = tempfile.mkstemp(prefix='.tmp-', suffix='.txt', dir=directory)
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8', newline='\n') as f:
+            f.write(text)
+        os.replace(temp_path, target)
+    except Exception:
+        try:
+            os.unlink(temp_path)
+        except OSError:
+            pass
+        raise
+
+
 def _save_api_key(api_key: str) -> None:
     """将 API Key 写入项目根目录 .env 文件"""
-    with open('.env', 'w', encoding='utf-8') as f:
-        f.write(f'VOICETRANSL_API_KEY={api_key}\n')
+    _atomic_write_text('.env', f'VOICETRANSL_API_KEY={api_key}\n')
 
 
 class MainWindow(QMainWindow):
@@ -1254,6 +1282,8 @@ class MainWindow(QMainWindow):
         self.worker = None
         self._active_task_button = None
         self._cancel_requested = False
+        self._close_confirmed = False
+        self._ui_settings = QSettings('VoiceTransl', 'VoiceTransl')
         self._suppress_auto_save = True
         self._button_mirrors = []
         self._dynamic_i18n_labels = []
@@ -1271,6 +1301,9 @@ class MainWindow(QMainWindow):
         self.splashScreen.setIconSize(QSize(102, 102))
         self.show()
         self.initUI()
+        saved_geometry = self._ui_settings.value('window/geometry')
+        if saved_geometry:
+            self.restoreGeometry(saved_geometry)
         self._log_level_filter = 'ALL'  # 日志级别过滤默认值
         self.setup_timer()
         self.splashScreen.finish()
@@ -1371,25 +1404,18 @@ class MainWindow(QMainWindow):
             'ui_language': current_lang,
             'target_translation_lang': target_translation_lang,
         }
-        with open('gui_settings.yaml', 'w', encoding='utf-8') as f:
-            yaml.dump(gui_settings, f, allow_unicode=True, sort_keys=False, default_flow_style=False)
+        _atomic_write_text(
+            'gui_settings.yaml',
+            yaml.dump(gui_settings, allow_unicode=True, sort_keys=False, default_flow_style=False),
+        )
 
         _save_api_key(gpt_token)
 
-        with open('crispasr/param.txt', 'w', encoding='utf-8') as f:
-            f.write(self.param_crispasr.toPlainText())
-
-        with open('llama/param.txt', 'w', encoding='utf-8') as f:
-            f.write(self.param_llama.toPlainText())
-
-        with open('project/dict_pre.txt', 'w', encoding='utf-8') as f:
-            f.write(self.before_dict.toPlainText())
-
-        with open('project/dict_gpt.txt', 'w', encoding='utf-8') as f:
-            f.write(self.gpt_dict.toPlainText())
-
-        with open('project/dict_after.txt', 'w', encoding='utf-8') as f:
-            f.write(self.after_dict.toPlainText())
+        _atomic_write_text('crispasr/param.txt', self.param_crispasr.toPlainText())
+        _atomic_write_text('llama/param.txt', self.param_llama.toPlainText())
+        _atomic_write_text('project/dict_pre.txt', self.before_dict.toPlainText())
+        _atomic_write_text('project/dict_gpt.txt', self.gpt_dict.toPlainText())
+        _atomic_write_text('project/dict_after.txt', self.after_dict.toPlainText())
 
         if not silent:
             self._emit_status(_("status_config_saved"))
@@ -1686,8 +1712,8 @@ class MainWindow(QMainWindow):
         log_page = self._make_split_tab(self.log_tab, [self.open_log_button])
 
         pages = [
-            (welcome_page, 'tab_welcome'),
             (workbench_page, 'tab_workbench'),
+            (welcome_page, 'tab_welcome'),
             (models_page, 'tab_models'),
             (dict_page, 'tab_dict'),
             (tools_page, 'tab_tools'),
@@ -1704,8 +1730,8 @@ class MainWindow(QMainWindow):
         self._select_main_tab(0)
 
         self._page_tab_indexes = {
-            self.about_tab: 0,
-            self.input_output_tab: 1,
+            self.input_output_tab: 0,
+            self.about_tab: 1,
             self.settings_tab: 2,
             self.advanced_settings_tab: 2,
             self.dict_tab: 3,
@@ -1722,6 +1748,12 @@ class MainWindow(QMainWindow):
         realtime_layout.setSpacing(5)
         self.realtime_output_label = SubtitleLabel(_('realtime_output_title'))
         realtime_layout.addWidget(self.realtime_output_label)
+        self.task_progress = QProgressBar()
+        self.task_progress.setRange(0, 0)
+        self.task_progress.setTextVisible(False)
+        self.task_progress.setFixedHeight(3)
+        self.task_progress.hide()
+        realtime_layout.addWidget(self.task_progress)
         self.output_text_edit.show()
         self.output_text_edit.setMinimumHeight(110)
         self.output_text_edit.setMaximumHeight(170)
@@ -1747,6 +1779,23 @@ class MainWindow(QMainWindow):
                 self.synth_srt_files_list.setText(current_text + "\n" + new_text)
             else:
                 self.synth_srt_files_list.setText(new_text)
+
+    def browse_input_files(self):
+        files, _unused = QFileDialog.getOpenFileNames(
+            self,
+            _("dialog_select_input_files"),
+            "",
+            "Media Files (*.mp4 *.mkv *.avi *.mov *.flv *.wav *.mp3 *.flac *.m4a *.srt *.ass *.vtt);;All Files (*)",
+        )
+        if not files:
+            return
+
+        lines = [line.strip() for line in self.input_files_list.toPlainText().splitlines() if line.strip()]
+        for file_path in files:
+            if file_path not in lines:
+                lines.append(file_path)
+        self.input_files_list.setPlainText('\n'.join(lines))
+        self._schedule_auto_save()
 
     def browse_output_dir(self):
         current_dir = self.output_dir_edit.text().strip() or self.default_output_dir()
@@ -2249,6 +2298,21 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         """确保在关闭窗口时停止定时器并关闭子进程，检查本地模型是否已关闭"""
+        if self._task_is_running() and not self._close_confirmed:
+            reply = QMessageBox.question(
+                self,
+                _("dialog_close_running_title"),
+                _("dialog_close_running_message"),
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No,
+            )
+            if reply != QMessageBox.Yes:
+                event.ignore()
+                return
+            self._close_confirmed = True
+
+        if getattr(self, '_ui_settings', None):
+            self._ui_settings.setValue('window/geometry', self.saveGeometry())
         try:
             self.save_config(silent=True)
         except Exception:
@@ -2304,7 +2368,7 @@ class MainWindow(QMainWindow):
     def changeEvent(self, event):
         # Hide window instead of cluttering the taskbar when minimized
         super().changeEvent(event)
-        if event.type() == QtCore.QEvent.WindowStateChange and self.isMinimized():
+        if sys.platform == 'win32' and event.type() == QtCore.QEvent.WindowStateChange and self.isMinimized():
             if getattr(self, 'tray_icon', None):
                 QTimer.singleShot(0, self.hide)
                 self.tray_icon.showMessage("VoiceTransl", _("tray_minimized"), QSystemTrayIcon.Information, 2000)
@@ -2321,6 +2385,7 @@ class MainWindow(QMainWindow):
 
         self.output_text_edit = QTextEdit()
         self.output_text_edit.setReadOnly(True)
+        self.output_text_edit.document().setMaximumBlockCount(2000)
         self.output_text_edit.setPlaceholderText(_("log_realtime_placeholder"))
         self.log_layout.addWidget(self.output_text_edit)
 
@@ -2348,6 +2413,7 @@ class MainWindow(QMainWindow):
         # log
         self.log_display = QPlainTextEdit(self)
         self.log_display.setReadOnly(True)
+        self.log_display.setMaximumBlockCount(5000)
         self.log_display.setStyleSheet("font-family: Consolas, Monospace; font-size: 10pt;")
         self.log_layout.addWidget(self.log_display)
 
@@ -2631,8 +2697,14 @@ class MainWindow(QMainWindow):
         self.input_output_layout = self.input_output_tab.vBoxLayout
 
         # Input Section (local files or URLs)
+        input_header = QHBoxLayout()
         self.io_input_label = BodyLabel(_("io_input_label"))
-        self.input_output_layout.addWidget(self.io_input_label)
+        input_header.addWidget(self.io_input_label)
+        input_header.addStretch(1)
+        self.io_add_files_button = QPushButton(_("io_add_files_btn"))
+        self.io_add_files_button.clicked.connect(self.browse_input_files)
+        input_header.addWidget(self.io_add_files_button)
+        self.input_output_layout.addLayout(input_header)
         self.input_files_list = QTextEdit()
         self.input_files_list.setAcceptDrops(True)
         self._bind_drop_event(self.input_files_list)
@@ -3202,6 +3274,7 @@ class MainWindow(QMainWindow):
         self._cancel_requested = False
         self._restore_task_button(source_button)
         self._set_action_button_enabled(self.cancel_button, False)
+        self.task_progress.hide()
         if was_cancelled:
             self._emit_status(_("status_cancel_done"))
 
@@ -3236,6 +3309,7 @@ class MainWindow(QMainWindow):
         self._set_action_button_enabled(self.cancel_button, True)
         try:
             thread.start()
+            self.task_progress.show()
         except Exception:
             self._task_finished(thread, worker)
             raise
@@ -3380,6 +3454,19 @@ class MainWorker(QObject):
         reader.start()
         self.pid = proc
         return proc
+
+    def _run_process_and_report(self, args, input_file, label=None):
+        try:
+            proc = self._start_process(args, label=label)
+        except Exception as e:
+            self._emit_status(_("status_file_processing_error", file=input_file, error=e))
+            return False
+        returncode = proc.wait()
+        self._cleanup_process(proc)
+        if returncode != 0:
+            self._emit_status(_("status_process_failed", file=input_file, code=returncode))
+            return False
+        return True
 
     def _cleanup_process(self, proc):
         if not proc:
@@ -3803,12 +3890,14 @@ class MainWorker(QObject):
                     break
                 if not os.path.exists(input_file):
                     self._emit_status(_("status_file_not_exist", file=input_file))
-                    self.finished.emit()
+                    continue
 
                 self._emit_status(_("status_vocal_split_label", idx=idx+1, total=len(input_files)))
-                proc = self._start_process([*_SEPARATE_CMD, '-m', os.path.join('separate',uvr_file), input_file])
-                proc.wait()
-                self._cleanup_process(proc)
+                if not self._run_process_and_report(
+                    [*_SEPARATE_CMD, '-m', os.path.join('separate', uvr_file), input_file],
+                    input_file,
+                ):
+                    continue
 
             self._emit_status(_("status_vocal_processing_done"))
         self.finished.emit()
@@ -3854,14 +3943,20 @@ class MainWorker(QObject):
         prompt = self.master.summarize_prompt.toPlainText()
         if input_files:
             input_files = input_files.strip().split('\n')
+            from summarize import summarize
             for idx, input_file in enumerate(input_files):
+                if self._stop_requested:
+                    break
                 if not os.path.exists(input_file):
                     self._emit_status(_("status_file_not_exist", file=input_file))
-                    self.finished.emit()
+                    continue
 
-                from summarize import summarize
                 self._emit_status(_("status_summarize_processing", idx=idx+1, total=len(input_files)))
-                summarize(input_file, address, model, token, prompt)
+                try:
+                    summarize(input_file, address, model, token, prompt)
+                except Exception as e:
+                    self._emit_status(_("status_file_processing_error", file=input_file, error=e))
+                    continue
             self._emit_status(_("status_processing_done"))
         self.finished.emit()
 
@@ -3909,33 +4004,33 @@ class MainWorker(QObject):
                     break
                 if not os.path.exists(input_file):
                     self._emit_status(_("status_file_not_exist", file=input_file))
-                    self.finished.emit()
-                    return
+                    continue
 
                 if not os.path.exists(input_srt):
                     self._emit_status(_("status_file_not_exist", file=input_srt))
-                    self.finished.emit()
-                    return
+                    continue
 
                 self._emit_status(_("status_synth_processing", file=input_file, idx=idx+1, total=len(video_files)))
                 
                 output_file = input_file + '_synth.mp4'
 
                 if subtitle_type == "硬字幕":
-                    input_srt_cache = shutil.copy(input_srt, 'project/cache/')
+                    cache_srt = Path('project/cache') / f'{Path(input_file).stem}_{idx}{Path(input_srt).suffix}'
+                    cache_srt.parent.mkdir(parents=True, exist_ok=True)
+                    input_srt_cache = shutil.copy(input_srt, cache_srt)
                     subtitle_filter = build_subtitle_filter(input_srt_cache, subtitle_font)
                     if subtitle_font:
                         self._emit_status(_("status_synth_font", font=subtitle_font))
                     self._emit_status(_("status_synth_hard_sub"))
-                    proc = self._start_process([_FFMPEG, '-y', '-i', input_file, '-vf', subtitle_filter, '-vcodec', 'libx264', '-acodec', 'aac', output_file])
+                    args = [_FFMPEG, '-y', '-i', input_file, '-vf', subtitle_filter, '-vcodec', 'libx264', '-acodec', 'aac', output_file]
                 else:
                     self._emit_status(_("status_synth_soft_sub"))
                     # For soft subtitles, we just map the streams.
                     # Depending on the container and subtitle format, -c:s mov_text works for mp4.
-                    proc = self._start_process([_FFMPEG, '-y', '-i', input_file, '-i', input_srt, '-c:v', 'copy', '-c:a', 'copy', '-c:s', 'mov_text', output_file])
+                    args = [_FFMPEG, '-y', '-i', input_file, '-i', input_srt, '-c:v', 'copy', '-c:a', 'copy', '-c:s', 'mov_text', output_file]
 
-                proc.wait()
-                self._cleanup_process(proc)
+                if not self._run_process_and_report(args, input_file):
+                    continue
                 self._emit_status(_("status_synth_done"))
             
         self.finished.emit()
@@ -3955,13 +4050,16 @@ class MainWorker(QObject):
                     break
                 if not os.path.exists(input_file):
                     self._emit_status(_("status_file_not_exist", file=input_file))
-                    self.finished.emit()
+                    continue
 
                 self._emit_status(_("status_processing_file", file=input_file, idx=idx+1, total=len(input_files)))
                 self._emit_status(_("status_clip_processing", start=clip_start, end=clip_end))
-                proc = self._start_process([_FFMPEG, '-y', '-i', input_file, '-ss', clip_start, '-to', clip_end, '-vcodec', 'libx264', '-acodec', 'aac', os.path.join(*(input_file.split('.')[:-1]))+'_clip.'+input_file.split('.')[-1]])
-                proc.wait()
-                self._cleanup_process(proc)
+                if not self._run_process_and_report(
+                    [_FFMPEG, '-y', '-i', input_file, '-ss', clip_start, '-to', clip_end,
+                     '-vcodec', 'libx264', '-acodec', 'aac', _clip_output_path(input_file)],
+                    input_file,
+                ):
+                    continue
                 self._emit_status(_("status_clip_done"))
         self.finished.emit()
 
@@ -3978,22 +4076,28 @@ class MainWorker(QObject):
             if len(audio_files) != len(image_files):
                 self._emit_status(_("status_audio_mismatch"))
                 self.finished.emit()
-            
+                return
+
             for idx, (audio_input, image_input) in enumerate(zip(audio_files, image_files)):
                 if self._stop_requested:
                     break
                 if not os.path.exists(audio_input):
                     self._emit_status(_("status_file_not_exist", file=audio_input))
-                    self.finished.emit()
+                    continue
 
                 if not os.path.exists(image_input):
                     self._emit_status(_("status_file_not_exist", file=image_input))
-                    self.finished.emit()
+                    continue
 
                 self._emit_status(_("status_processing_file", file=audio_input, idx=idx+1, total=len(image_files)))
-                proc = self._start_process([_FFMPEG, '-y', '-loop', '1', '-r', '1', '-f', 'image2', '-i', image_input, '-i', audio_input, '-shortest', '-vcodec', 'libx264', '-acodec', 'aac', audio_input+'_synth.mp4'], label='ffmpeg')
-                proc.wait()
-                self._cleanup_process(proc)
+                if not self._run_process_and_report(
+                    [_FFMPEG, '-y', '-loop', '1', '-r', '1', '-f', 'image2', '-i', image_input,
+                     '-i', audio_input, '-shortest', '-vcodec', 'libx264', '-acodec', 'aac',
+                     audio_input + '_synth.mp4'],
+                    audio_input,
+                    label='ffmpeg',
+                ):
+                    continue
                 self._emit_status(_("status_synth_done"))
             
         self.finished.emit()
@@ -4321,9 +4425,9 @@ class MainWorker(QObject):
                         cover_url=res['pic'] if res['videos'] == 1 else res['pages'][0]['pic'],
                     )], False)
                     self._emit_status(_("status_download_complete"))
-                    title = res['title'] if res['videos'] == 1 else res['pages'][0]['part']
-                    title = re.sub(r'[.:?/\\]', ' ', title).strip()
-                    title = re.sub(r'\s+', ' ', title)
+                    title = _sanitize_download_title(
+                        res['title'] if res['videos'] == 1 else res['pages'][0]['part']
+                    ) or res['bvid']
                     downloaded_file = os.path.abspath(f"{title}.mp4")
                     target_file = os.path.join(output_dir, os.path.basename(downloaded_file))
                     if os.path.exists(downloaded_file):
