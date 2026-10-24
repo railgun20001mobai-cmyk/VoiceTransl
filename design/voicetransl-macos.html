@@ -37,6 +37,12 @@
   --red-soft: rgba(255,59,48,.11);
   --orange:#ff9f0a;
   --purple:#af52de;
+  --thumb-video-bg:#eaf3ff;
+  --thumb-video-fg:#0a63cf;
+  --thumb-audio-bg:#f5edff;
+  --thumb-audio-fg:#8e3fc3;
+  --thumb-sub-bg:#e9f8ef;
+  --thumb-sub-fg:#1c7d45;
   --window-border: rgba(255,255,255,.55);
   --window-ring: rgba(20,32,52,.18);
   --shadow-window: 0 40px 110px rgba(24,39,64,.30), 0 2px 8px rgba(24,39,64,.10);
@@ -70,6 +76,12 @@ html[data-theme="dark"]{
   --green-soft: rgba(48,209,88,.14);
   --red:#ff453a;
   --red-soft: rgba(255,69,58,.14);
+  --thumb-video-bg:#20344b;
+  --thumb-video-fg:#8ec5ff;
+  --thumb-audio-bg:#332640;
+  --thumb-audio-fg:#d8b0f5;
+  --thumb-sub-bg:#1e392b;
+  --thumb-sub-fg:#8ee3ad;
   --window-border: rgba(255,255,255,.10);
   --window-ring: rgba(0,0,0,.55);
   --shadow-window: 0 44px 120px rgba(0,0,0,.66), 0 0 0 .5px rgba(255,255,255,.06);
@@ -263,13 +275,11 @@ html[data-theme="dark"] .wallpaper{background:#0f1115}
 .queue-row{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:11px;align-items:center;padding:10px 14px;border-bottom:.5px solid var(--sep);transition:background var(--t-fast)}
 .queue-row:last-child{border-bottom:0}
 .queue-row:hover{background:var(--hover)}
-.thumb{width:54px;height:35px;border-radius:6px;position:relative;overflow:hidden;display:grid;place-items:center;color:rgba(255,255,255,.86);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.14)}
-.thumb svg{width:17px;height:17px;opacity:.9}
-.thumb.video{background:#3e4a5e}
-.thumb.audio{background:#5a466e}
-.thumb.sub{background:#2f6054}
-.queue-list .thumb .dur{display:none}
-.thumb .dur{position:absolute;right:3px;bottom:2px;white-space:nowrap;font-size:8px;font-family:var(--font-ui);font-weight:600;color:#fff;background:rgba(0,0,0,.46);padding:1px 3px;border-radius:3px;letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.thumb{width:54px;height:35px;border-radius:7px;position:relative;overflow:hidden;display:grid;place-items:center;box-shadow:inset 0 0 0 .5px color-mix(in srgb, currentColor 16%, transparent)}
+.thumb svg{width:18px;height:18px}
+.thumb.video{background:var(--thumb-video-bg);color:var(--thumb-video-fg)}
+.thumb.audio{background:var(--thumb-audio-bg);color:var(--thumb-audio-fg)}
+.thumb.sub{background:var(--thumb-sub-bg);color:var(--thumb-sub-fg)}
 .file-name{font-size:12px;font-weight:550;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .file-meta{font-size:10.5px;color:var(--label-3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
 .stages{display:flex;align-items:center;gap:8px;margin-top:5px;font-size:10px;color:var(--label-3);flex-wrap:wrap}
@@ -548,9 +558,10 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.2A2.2 2.2 0 0 1 5.7 5h4l1.7 2h7A2.1 2.1 0 0 1 20.5 9v8.3a2.2 2.2 0 0 1-2.2 2.2H5.7a2.2 2.2 0 0 1-2.2-2.2V7.2Z"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-more" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5.5" cy="12" r="1.35"/><circle cx="12" cy="12" r="1.35"/><circle cx="18.5" cy="12" r="1.35"/></symbol>
-    <symbol id="i-film" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="M7 4.5v15M17 4.5v15M3 9h4M3 15h4M17 9h4M17 15h4"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="3.2"/><path d="M10.2 9.1 15.4 12l-5.2 2.9z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-wave" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"><path d="M3 12h2M7 8.5v7M11 5.5v13M15 8v8M19 10.5v3"/></symbol>
-    <symbol id="i-sub" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2.2"/><path d="M7 10h5M7 13h3M14.5 13h2.5"/></symbol>
+    <symbol id="i-audio" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 17.2V6.6l8.8-2v10.6"/><circle cx="6.7" cy="17.4" r="2.4"/><circle cx="15.5" cy="15.2" r="2.4"/></symbol>
+    <symbol id="i-sub" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.2 4.5h15.6A2.2 2.2 0 0 1 22 6.7v9.1a2.2 2.2 0 0 1-2.2 2.2h-8.9L6.4 21v-3H4.2A2.2 2.2 0 0 1 2 15.8V6.7a2.2 2.2 0 0 1 2.2-2.2z"/><path d="M6.5 9.2h11M6.5 12.2h6.8"/></symbol>
     <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.2 13.8a3.6 3.6 0 0 0 5.1 0l2.4-2.4a3.6 3.6 0 1 0-5.1-5.1l-1.2 1.2"/><path d="M13.8 10.2a3.6 3.6 0 0 0-5.1 0l-2.4 2.4a3.6 3.6 0 1 0 5.1 5.1l1.2-1.2"/></symbol>
     <symbol id="i-chevron" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m7 9.5 5 5 5-5"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.2 4.2L19 7"/></symbol>
@@ -1169,7 +1180,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
   let filter = "all";
   let query = "";
 
-  const iconFor = t => t === "audio" ? "i-wave" : t === "sub" ? "i-sub" : "i-film";
+  const iconFor = t => t === "audio" ? "i-audio" : t === "sub" ? "i-sub" : "i-film";
   const stageState = (f, i) => {
     if (f.status === "done") return "done";
     if (f.status === "running") return i < f.stage ? "done" : i === f.stage ? "active" : "";
@@ -1185,7 +1196,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     const stages = STAGES.map((s, i) => `<span class="phase ${stageState(f, i)}">${s}</span>`).join("");
     const meta = `${f.duration} · ${f.size}`;
     return `<div class="queue-row" data-id="${f.id}" data-status="${f.status}">
-      <div class="thumb ${f.type}"><svg><use href="#${iconFor(f.type)}"/></svg><span class="dur">${f.duration}</span></div>
+      <div class="thumb ${f.type}"><svg><use href="#${iconFor(f.type)}"/></svg></div>
       <div style="min-width:0">
         <div class="file-name" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</div>
         <div class="file-meta">${meta}</div>
