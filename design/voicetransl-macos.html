@@ -459,6 +459,8 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
 .settings-panel{background:var(--card-bg);border:.5px solid var(--sep);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
 .settings-pane{display:none}
 .settings-pane.active{display:block;animation:viewIn 220ms var(--t-smooth) both}
+.settings-block{transition:opacity 180ms var(--t-smooth)}
+.settings-block.is-off{opacity:.42;pointer-events:none}
 .settings-group-title{padding:13px 15px 7px;font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--label-3)}
 .setting-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:11px 15px;border-top:.5px solid var(--sep);min-height:48px}
 .settings-group-title+.setting-row{border-top:0}
@@ -504,6 +506,86 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
 .toast .toast-action{border:0;background:transparent;color:#8ec5ff;font-size:11px;font-weight:600;padding:3px 5px;border-radius:5px;margin-left:2px}
 .toast .toast-action:hover{background:rgba(255,255,255,.1)}
 
+/* ─────────────────────────────  Range input  ───────────────────────────── */
+.range-row{display:flex;align-items:center;gap:9px;height:31px}
+.range-row input[type="range"]{flex:1;min-width:0;height:18px;accent-color:var(--accent);background:transparent}
+.range-val{min-width:46px;text-align:right;font-size:10px;color:var(--label-2);font-variant-numeric:tabular-nums}
+
+/* ─────────────────────────────  Tools  ───────────────────────────── */
+.tool-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tool-bar .segmented{width:auto;grid-auto-columns:auto;padding:2px}
+.tool-bar .segmented button{height:26px;font-size:10.5px;padding:0 12px;gap:5px}
+.tool-bar .spacer{flex:1}
+.tool-pane{display:none}
+.tool-pane.active{display:block;animation:viewIn 220ms var(--t-smooth) both}
+.tool-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:start}
+.tool-body{padding:14px}
+.tool-files{width:100%;min-height:104px;border:1px dashed var(--sep-strong);border-radius:9px;background:var(--card-bg-2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;color:var(--label-3);font-size:10.5px;line-height:1.5;gap:4px;transition:border-color var(--t-fast),background var(--t-fast)}
+.tool-files:hover{border-color:color-mix(in srgb,var(--accent) 40%, var(--sep-strong));background:color-mix(in srgb,var(--accent) 4%, var(--card-bg-2))}
+.tool-files svg{width:19px;height:19px;opacity:.6;margin-bottom:2px}
+.tool-files b{font-size:11px;font-weight:600;color:var(--label-2)}
+.tool-files .files{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:5px}
+.tool-files .files span{background:var(--fill);border-radius:5px;padding:2px 6px;font-size:9.5px;color:var(--label-2)}
+.tool-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.tool-options .field{margin-bottom:0}
+.tool-actions{display:flex;align-items:center;gap:9px;margin-top:13px}
+.tool-note{font-size:9.5px;line-height:1.5;color:var(--label-3)}
+.tool-input{width:100%;height:31px;border:.5px solid var(--sep-strong);border-radius:8px;background:var(--card-bg-2);padding:0 9px;font-size:11px;color:var(--label);outline:none;font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
+.tool-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.tool-side{padding:14px}
+.tool-side h3{font-size:11.5px;font-weight:650;margin:0 0 7px}
+.tool-side p{font-size:10px;line-height:1.6;color:var(--label-3);margin:0 0 10px}
+.tool-side .kv{padding:3px 0}
+.tool-side .btn{margin-top:4px}
+.text-area{width:100%;min-height:96px;resize:vertical;border:.5px solid var(--sep-strong);border-radius:9px;background:var(--card-bg-2);padding:9px 10px;font-size:11px;line-height:1.6;outline:none;color:var(--label)}
+.text-area:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.text-area::placeholder{color:var(--label-3)}
+.text-area.mono{font-family:var(--font-mono);font-size:10.5px}
+.tool-inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tool-inline .select{width:auto;min-width:132px;height:28px;font-size:10.5px}
+
+/* ─────────────────────────────  Dictionary panes  ───────────────────────────── */
+.dict-pane{display:none}
+.dict-pane.active{display:block;animation:viewIn 220ms var(--t-smooth) both}
+.dict-editor{min-height:250px}
+.dict-help{margin:0 0 10px;font-size:10px;line-height:1.55;color:var(--label-3)}
+.dict-save{display:flex;align-items:center;gap:9px;margin-top:10px}
+
+/* ─────────────────────────────  Log view  ───────────────────────────── */
+.log-panel .panel-head{height:40px}
+.log-panel .panel-tools{gap:8px}
+.log-stream{height:clamp(340px,52vh,560px);overflow:auto;padding:9px 14px 12px;font-family:var(--font-mono);font-size:10.5px;line-height:1.9;color:var(--label-2)}
+.log-stream::-webkit-scrollbar{width:9px}
+.log-stream::-webkit-scrollbar-thumb{background:var(--fill-2);border:3px solid var(--card-bg);border-radius:8px;background-clip:content-box}
+.log-panel .table-foot b{color:var(--label-2);font-weight:600}
+
+/* ─────────────────────────────  About  ───────────────────────────── */
+.about-hero{display:flex;align-items:center;gap:16px;padding:20px}
+.about-mark{width:62px;height:62px;border-radius:15px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--font-display);font-size:30px;font-weight:700;letter-spacing:-.04em;box-shadow:inset 0 .5px 0 rgba(255,255,255,.35),0 8px 20px color-mix(in srgb,var(--accent) 24%, transparent);flex:none}
+.about-copy{min-width:0;flex:1}
+.about-copy h2{font-family:var(--font-display);font-size:21px;font-weight:700;letter-spacing:-.028em;margin:0}
+.about-copy p{font-size:11.5px;line-height:1.55;color:var(--label-2);margin:4px 0 0;max-width:520px}
+.about-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.about-meta span{font-size:9.5px;color:var(--label-3);background:var(--fill);border-radius:5px;padding:2px 6px}
+.link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.link-card{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:var(--card-bg);border:.5px solid var(--sep);box-shadow:var(--shadow-card);color:var(--label);text-decoration:none;transition:transform var(--t-fast),border-color var(--t-fast)}
+.link-card:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 26%, var(--sep))}
+.link-card .ico{width:30px;height:30px;border-radius:8px;background:var(--fill);display:grid;place-items:center;color:var(--label-2);flex:none}
+.link-card .ico svg{width:15px;height:15px}
+.link-card b{display:block;font-size:11.5px;font-weight:600}
+.link-card small{display:block;font-size:9.5px;color:var(--label-3);margin-top:1px}
+.link-card .arrow{margin-left:auto;color:var(--label-3);font-size:11px;display:flex;align-items:center}
+.link-card .arrow svg{width:13px;height:13px;display:block}
+
+/* ─────────────────────────────  Row popover menu  ───────────────────────────── */
+.popmenu{position:fixed;z-index:70;min-width:172px;background:var(--raise-bg);border:.5px solid var(--window-border);border-radius:9px;box-shadow:var(--shadow-pop);padding:4px;animation:fadeIn 120ms ease both}
+.popmenu button{width:100%;height:28px;border:0;border-radius:6px;background:transparent;display:flex;align-items:center;gap:7px;padding:0 8px;font-size:11px;color:var(--label);text-align:left}
+.popmenu button:hover{background:var(--hover)}
+.popmenu button.danger{color:var(--red)}
+.popmenu button:disabled{opacity:.4;cursor:default}
+.popmenu svg{width:13px;height:13px;opacity:.7}
+.popmenu hr{border:0;border-top:.5px solid var(--sep);margin:4px 2px}
+
 /* ─────────────────────────────  Responsive  ───────────────────────────── */
 @media (max-width:1180px){
   .window{grid-template-columns:224px minmax(0,1fr)}
@@ -519,6 +601,8 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
   .settings-layout{grid-template-columns:1fr}
   .settings-nav{flex-direction:row;overflow:auto}
   .settings-nav button{white-space:nowrap}
+  .tool-grid{grid-template-columns:1fr}
+  .link-grid{grid-template-columns:1fr}
 }
 @media (max-width:860px){
   .window{grid-template-columns:70px minmax(0,1fr)}
@@ -536,6 +620,8 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
   .queue-table .col-status{display:none}
   .views{padding:18px 16px 20px}
   .console{margin:0 16px 12px}
+  .tool-bar .segmented{max-width:100%;overflow-x:auto;scrollbar-width:none}
+  .tool-bar .segmented::-webkit-scrollbar{display:none}
 }
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
@@ -577,6 +663,14 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m13.5 2.5-8 11h5l-1 8 8-11h-5l1-8Z"/></symbol>
     <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="4.5"/><path d="m11.8 11.8 8 8M16 13.8l2.2 2.2M13.8 16l2.2 2.2"/></symbol>
     <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16"/><path d="M7.5 16v-5M11.5 16V7M15.5 16v-8M19.5 16v-3"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.2M12 7.8v.2"/></symbol>
+    <symbol id="i-retry" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5A8 8 0 1 1 4 13"/><path d="M4.5 4.5v5h5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.2 6.2L4 8.5"/><path d="M4 4v4.5h4.5"/><path d="M4 12.5a8 8 0 0 0 13.8 5.3L20 15.5"/><path d="M20 20v-4.5h-4.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 5.6 18 12l-9.5 6.4z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-scissors" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="2.8"/><circle cx="6.5" cy="17.5" r="2.8"/><path d="m8.8 8.2 10.7 8.3M8.8 15.8 19.5 7.5"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14M5 10.5h14M5 15h9M5 19.5h6"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2 4.6 13a4.7 4.7 0 0 1 6.6-6.7l.8.8.8-.8A4.7 4.7 0 0 1 19.4 13L12 20.2Z"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5h5v5M19 5l-7 7"/><path d="M17.5 13.5V18a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 18V8A1.5 1.5 0 0 1 6 6.5h4.5"/></symbol>
   </defs>
 </svg>
 
@@ -609,12 +703,16 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
       <nav class="nav" aria-label="主导航">
         <div class="nav-section">工作区</div>
         <button class="nav-item active" data-view="workbench" aria-current="page"><svg><use href="#i-home"/></svg><span class="nav-label">工作台</span><span class="nav-badge" id="navQueueCount">3</span></button>
-        <button class="nav-item" data-view="queue"><svg><use href="#i-queue"/></svg><span class="nav-label">任务队列</span><span class="nav-badge">3</span></button>
+        <button class="nav-item" data-view="queue"><svg><use href="#i-queue"/></svg><span class="nav-label">任务队列</span><span class="nav-badge" id="navQueueBadge">3</span></button>
         <div class="nav-section">资源</div>
         <button class="nav-item" data-view="dictionary"><svg><use href="#i-book"/></svg><span class="nav-label">词典</span></button>
         <button class="nav-item" data-view="models"><svg><use href="#i-cpu"/></svg><span class="nav-label">模型</span></button>
+        <div class="nav-section">工具</div>
+        <button class="nav-item" data-view="tools"><svg><use href="#i-sliders"/></svg><span class="nav-label">分离 · 合成 · 总结</span></button>
+        <button class="nav-item" data-view="logs"><svg><use href="#i-console"/></svg><span class="nav-label">日志</span></button>
         <div class="nav-section">系统</div>
         <button class="nav-item" data-view="settings"><svg><use href="#i-gear"/></svg><span class="nav-label">设置</span></button>
+        <button class="nav-item" data-view="about"><svg><use href="#i-info"/></svg><span class="nav-label">关于</span></button>
       </nav>
       <div class="sidebar-foot">
         <div class="engine-card">
@@ -661,12 +759,13 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                   <span class="panel-title">队列</span>
                   <span class="count-pill" id="queueCount">3 个文件</span>
                   <div class="panel-tools">
+                    <button class="text-btn" id="cleanCache">清理中间文件</button>
                     <button class="text-btn" id="clearQueue">全部清空</button>
                   </div>
                 </div>
                 <div class="queue-list" id="queueList"></div>
                 <div class="queue-end">
-                  <span>输出到 <b id="outputPath">~/Movies/聆译</b></span>
+                  <span>输出到 <b id="outputPath">~/Movies/聆译</b> <button class="text-btn" id="changeOutput">更改</button></span>
                   <span id="queueSummary">1 个已完成 · 2 个等待</span>
                 </div>
               </section>
@@ -695,6 +794,14 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                   </button>
                 </div>
 
+                <div class="field" id="asrLengthField">
+                  <label>听写句子长度 <span class="hint">0 沿用参数文件</span></label>
+                  <div class="range-row">
+                    <input id="asrLength" type="range" min="0" max="120" step="10" value="0" aria-label="听写句子长度（字）">
+                    <span class="range-val" id="asrLengthVal">沿用参数</span>
+                  </div>
+                </div>
+
                 <div class="field" id="targetLangField">
                   <label>翻译为</label>
                   <button class="select" data-toast="示例原型中未展开语言列表">
@@ -704,16 +811,19 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 </div>
 
                 <div class="field">
-                  <label>输出字幕</label>
-                  <div class="two">
-                    <button class="select" data-toast="示例原型中未展开字幕类型">
-                      <span class="lhs"><span>双语</span></span>
-                      <svg><use href="#i-chevron"/></svg>
-                    </button>
-                    <div class="segmented" id="formatSegment" role="tablist" aria-label="字幕格式">
-                      <button class="active" role="tab" aria-selected="true">SRT</button>
-                      <button role="tab" aria-selected="false">LRC</button>
-                    </div>
+                  <label>输出内容</label>
+                  <div class="segmented" id="outputTargetSegment" role="tablist" aria-label="输出内容">
+                    <button data-target="original" role="tab" aria-selected="false">原文</button>
+                    <button data-target="translated" role="tab" aria-selected="false">译文</button>
+                    <button class="active" data-target="both" role="tab" aria-selected="true">双语</button>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>字幕格式</label>
+                  <div class="segmented" id="formatSegment" role="tablist" aria-label="字幕格式">
+                    <button class="active" role="tab" aria-selected="true">SRT</button>
+                    <button role="tab" aria-selected="false">LRC</button>
                   </div>
                 </div>
 
@@ -721,14 +831,24 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                   <summary>高级选项 <svg><use href="#i-chevron"/></svg></summary>
                   <div class="advanced-content">
                     <div class="adv-row">
-                      <span class="lbl">并发翻译<small>在线接口可提高吞吐</small></span>
+                      <span class="lbl">并发翻译<small>0 为串行；在线接口可提高吞吐</small></span>
                       <div class="stepper" aria-label="并发翻译">
-                        <button data-step="-1" aria-label="减少">−</button><span id="concurrency">1</span><button data-step="1" aria-label="增加">＋</button>
+                        <button data-step="-1" data-min="0" data-max="20" aria-label="减少">−</button><span id="concurrency">1</span><button data-step="1" data-min="0" data-max="20" aria-label="增加">＋</button>
                       </div>
                     </div>
                     <div class="adv-row">
                       <span class="lbl">长音频分段<small>超过 10 分钟自动切分</small></span>
                       <button class="switch" role="switch" aria-checked="false" aria-label="长音频分段"></button>
+                    </div>
+                    <div class="adv-row">
+                      <span class="lbl">分段时长<small>1–20 分钟</small></span>
+                      <div class="stepper" aria-label="分段时长">
+                        <button data-step="-1" data-min="1" data-max="20" aria-label="减少">−</button><span id="segmentMinutes">10</span><button data-step="1" data-min="1" data-max="20" aria-label="增加">＋</button>
+                      </div>
+                    </div>
+                    <div class="adv-row">
+                      <span class="lbl">使用输入目录<small>字幕输出到源文件旁边</small></span>
+                      <button class="switch" role="switch" aria-checked="false" aria-label="使用输入目录"></button>
                     </div>
                     <div class="adv-row">
                       <span class="lbl">完成后关机<small>仅在全部任务成功后执行</small></span>
@@ -780,28 +900,84 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
           <div class="page-head">
             <div><h1>词典</h1><p>统一术语译法，支持全局与按项目生效。</p></div>
             <div class="head-actions">
+              <button class="btn ghost" data-toast="词典目录：~/Library/Application Support/VoiceTransl/dict"><svg><use href="#i-folder"/></svg>打开词典目录</button>
               <button class="btn ghost" data-toast="已导入 12 条词条（示例）"><svg><use href="#i-down"/></svg>导入 CSV</button>
               <button class="btn secondary" id="addTermBtn"><svg><use href="#i-plus"/></svg>新建词条</button>
             </div>
           </div>
           <div class="filter-bar">
-            <label class="inline-search" style="min-width:260px"><svg><use href="#i-search"/></svg><input id="termSearch" type="text" placeholder="搜索原文或译文" aria-label="搜索词条"></label>
-            <button class="select" style="width:auto;min-width:128px;height:28px" data-toast="示例原型中未展开范围筛选"><span class="lhs"><span>全部范围</span></span><svg><use href="#i-chevron"/></svg></button>
+            <div class="segmented" id="dictTabs" role="tablist" aria-label="词典内容">
+              <button class="active" data-dict="terms" role="tab" aria-selected="true">术语表</button>
+              <button data-dict="before" role="tab" aria-selected="false">翻译前替换</button>
+              <button data-dict="after" role="tab" aria-selected="false">翻译后校正</button>
+              <button data-dict="prompt" role="tab" aria-selected="false">提示词</button>
+            </div>
             <div class="spacer"></div>
             <span class="count-pill" id="termCount">1,284 条</span>
           </div>
-          <div class="table-wrap">
-            <table class="data-table">
-              <thead><tr><th style="width:31%">原文</th><th style="width:27%">译文</th><th style="width:20%">备注</th><th style="width:14%">范围</th><th style="width:8%"></th></tr></thead>
-              <tbody id="termBody">
-                <tr><td class="term">がっこう</td><td>学校</td><td class="muted">名词</td><td><span class="scope global">全局</span></td><td class="right"><button class="switch" role="switch" aria-checked="true" aria-label="启用 がっこう"></button></td></tr>
-                <tr><td class="term">先輩</td><td>前辈</td><td class="muted">敬称</td><td><span class="scope global">全局</span></td><td class="right"><button class="switch" role="switch" aria-checked="true" aria-label="启用 先輩"></button></td></tr>
-                <tr><td class="term">バッテリー</td><td>电池</td><td class="muted">名词</td><td><span class="scope">EP01</span></td><td class="right"><button class="switch" role="switch" aria-checked="false" aria-label="启用 バッテリー"></button></td></tr>
-                <tr><td class="term">ありがとう</td><td>谢谢</td><td class="muted">口语</td><td><span class="scope global">全局</span></td><td class="right"><button class="switch" role="switch" aria-checked="true" aria-label="启用 ありがとう"></button></td></tr>
-                <tr><td class="term">おつかれさま</td><td>辛苦了</td><td class="muted">寒暄</td><td><span class="scope global">全局</span></td><td class="right"><button class="switch" role="switch" aria-checked="true" aria-label="启用 おつかれさま"></button></td></tr>
-              </tbody>
-            </table>
-            <div class="table-foot"><span>翻译前预处理 · 翻译后校正</span><span><b>1,284</b> 个启用词条</span></div>
+
+          <div class="dict-pane active" id="dict-terms">
+            <div class="filter-bar">
+              <label class="inline-search" style="min-width:260px"><svg><use href="#i-search"/></svg><input id="termSearch" type="text" placeholder="搜索原文或译文" aria-label="搜索词条"></label>
+              <button class="select" style="width:auto;min-width:128px;height:28px" data-toast="示例原型中未展开范围筛选"><span class="lhs"><span>全部范围</span></span><svg><use href="#i-chevron"/></svg></button>
+              <div class="spacer"></div>
+              <span class="tool-note">翻译前预处理 · 翻译后校正</span>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th style="width:31%">原文</th><th style="width:27%">译文</th><th style="width:20%">备注</th><th style="width:14%">范围</th><th style="width:8%"></th></tr></thead>
+                <tbody id="termBody">
+                  <tr><td class="term">がっこう</td><td>学校</td><td class="muted">名词</td><td><span class="scope global">全局</span></td><td class="right"><button class="switch" role="switch" aria-checked="true" aria-label="启用 がっこう"></button></td></tr>
+                  <tr><td class="term">先輩</td><td>前辈</td><td class="muted">敬称</td><td><span class="scope global">全局</span></td><td class="right"><button class="switch" role="switch" aria-checked="true" aria-label="启用 先輩"></button></td></tr>
+                  <tr><td class="term">バッテリー</td><td>电池</td><td class="muted">名词</td><td><span class="scope">EP01</span></td><td class="right"><button class="switch" role="switch" aria-checked="false" aria-label="启用 バッテリー"></button></td></tr>
+                  <tr><td class="term">ありがとう</td><td>谢谢</td><td class="muted">口语</td><td><span class="scope global">全局</span></td><td class="right"><button class="switch" role="switch" aria-checked="true" aria-label="启用 ありがとう"></button></td></tr>
+                  <tr><td class="term">おつかれさま</td><td>辛苦了</td><td class="muted">寒暄</td><td><span class="scope global">全局</span></td><td class="right"><button class="switch" role="switch" aria-checked="true" aria-label="启用 おつかれさま"></button></td></tr>
+                </tbody>
+              </table>
+              <div class="table-foot"><span>翻译前预处理 · 翻译后校正</span><span><b>1,284</b> 个启用词条</span></div>
+            </div>
+          </div>
+
+          <div class="dict-pane" id="dict-before">
+            <section class="panel">
+              <div class="panel-head"><span class="panel-title">翻译前替换</span><span class="count-pill">作用于原文</span><div class="panel-tools"><button class="text-btn" data-toast="已恢复默认内容（示例）">恢复默认</button></div></div>
+              <div class="tool-body">
+                <p class="dict-help">每行一条「匹配=替换」，在送入翻译前应用。适合固定写法、人名与专有名词，避免模型改写。</p>
+                <textarea class="text-area mono dict-editor" id="dictBefore" aria-label="翻译前替换规则" placeholder="がっこう=学校&#10;先輩=前辈&#10;おつかれさま=辛苦了"></textarea>
+                <div class="dict-save"><button class="btn secondary small" data-toast="已保存翻译前替换规则">保存</button><span class="tool-note">启用的全局词条会自动参与预处理。</span></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="dict-pane" id="dict-after">
+            <section class="panel">
+              <div class="panel-head"><span class="panel-title">翻译后校正</span><span class="count-pill">作用于译文</span><div class="panel-tools"><button class="text-btn" data-toast="已恢复默认内容（示例）">恢复默认</button></div></div>
+              <div class="tool-body">
+                <p class="dict-help">每行一条「匹配=替换」，在模型输出后统一校正。适合统一译名与修正高频误译。</p>
+                <textarea class="text-area mono dict-editor" id="dictAfter" aria-label="翻译后校正规则" placeholder="電池=电池&#10;先辈=前辈"></textarea>
+                <div class="dict-save"><button class="btn secondary small" data-toast="已保存翻译后校正规则">保存</button><span class="tool-note">仅在启用翻译时生效。</span></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="dict-pane" id="dict-prompt">
+            <section class="panel">
+              <div class="panel-head"><span class="panel-title">附加提示词</span><span class="count-pill">翻译风格</span></div>
+              <div class="tool-body">
+                <p class="dict-help">追加到翻译系统提示，用于语气、人称与风格约束。术语请优先写进术语表。</p>
+                <textarea class="text-area dict-editor" id="dictPrompt" aria-label="附加提示词" placeholder="保持角色语气，口语化，避免书面腔。"></textarea>
+                <div class="tool-inline" style="margin-top:10px">
+                  <span class="tool-note">提示词模式</span>
+                  <div class="segmented" id="promptMode" role="tablist" aria-label="提示词处理方式" style="width:auto">
+                    <button data-prompt-mode="keep" role="tab" aria-selected="false">不修改</button>
+                    <button class="active" data-prompt-mode="append" role="tab" aria-selected="true">追加</button>
+                    <button data-prompt-mode="overwrite" role="tab" aria-selected="false">覆盖</button>
+                  </div>
+                  <button class="btn secondary small" data-toast="已保存提示词">保存</button>
+                  <button class="btn ghost small" data-toast="已恢复默认提示词">恢复默认</button>
+                </div>
+              </div>
+            </section>
           </div>
         </section>
 
@@ -810,6 +986,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
           <div class="page-head">
             <div><h1>模型</h1><p>听写、对齐与翻译都在本地完成，也可以接入在线接口。</p></div>
             <div class="head-actions">
+              <button class="btn ghost" id="refreshModels"><svg><use href="#i-refresh"/></svg>刷新列表</button>
               <button class="btn ghost" data-toast="模型目录：~/Library/Application Support/VoiceTransl/models"><svg><use href="#i-folder"/></svg>打开模型文件夹</button>
             </div>
           </div>
@@ -825,7 +1002,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 <div class="kv"><span>运行设备</span><b>CUDA · 显存 2.9 GB</b></div>
                 <div class="kv"><span>上次测试</span><b>今天 14:20 · 8.4× 实时</b></div>
               </div>
-              <div class="model-foot"><button class="btn secondary small test-model">测试听写</button><div class="spacer"></div><button class="text-btn">更换模型</button></div>
+              <div class="model-foot"><button class="btn secondary small test-model">测试听写</button><div class="spacer"></div><button class="text-btn" data-toast="示例原型中未绑定模型文件选择">更换模型</button></div>
             </article>
             <article class="model-card">
               <div class="model-top">
@@ -838,7 +1015,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 <div class="kv"><span>用途</span><b>生成逐字时间轴</b></div>
                 <div class="kv"><span>上次测试</span><b>今天 14:20 · 正常</b></div>
               </div>
-              <div class="model-foot"><button class="btn secondary small test-model">测试对齐</button><div class="spacer"></div><button class="text-btn">更换模型</button></div>
+              <div class="model-foot"><button class="btn secondary small test-model">测试对齐</button><div class="spacer"></div><button class="text-btn" data-toast="示例原型中未绑定模型文件选择">更换模型</button></div>
             </article>
             <article class="model-card">
               <div class="model-top">
@@ -851,7 +1028,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 <div class="kv"><span>GPU 层</span><b>100 / 100</b></div>
                 <div class="kv"><span>在线接口</span><b>未启用</b></div>
               </div>
-              <div class="model-foot"><button class="btn secondary small test-model">测试翻译</button><div class="spacer"></div><button class="text-btn" data-view-jump="settings">连接设置</button></div>
+              <div class="model-foot"><button class="btn secondary small test-model">测试翻译</button><div class="spacer"></div><button class="text-btn" data-view-jump="settings:translation">连接设置</button></div>
             </article>
             <article class="model-card">
               <div class="model-top">
@@ -864,14 +1041,333 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 <div class="kv"><span>用途</span><b>提取人声 / 伴奏</b></div>
                 <div class="kv"><span>上次使用</span><b>昨天 21:06</b></div>
               </div>
-              <div class="model-foot"><button class="btn secondary small test-model">测试分离</button><div class="spacer"></div><button class="text-btn">更换模型</button></div>
+              <div class="model-foot"><button class="btn secondary small test-model">测试分离</button><div class="spacer"></div><button class="text-btn" data-toast="示例原型中未绑定模型文件选择">更换模型</button></div>
             </article>
           </div>
+          <section class="settings-panel" style="margin-top:14px">
+            <div class="setting-row" style="border-top:0">
+              <div><div class="setting-title">听写后端</div><div class="setting-desc">必须与听写模型兼容；切换后模型会重新加载。</div></div>
+              <div class="setting-control"><button class="select" style="width:220px" data-toast="示例原型中未展开后端列表"><span class="lhs"><span>CUDA · qwen3-1.7b</span></span><svg><use href="#i-chevron"/></svg></button></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="setting-title">命令模板</div><div class="setting-desc">调整 CrispASR 与 llama.cpp 的启动参数，留空则使用默认值。</div></div>
+              <div class="setting-control"><button class="btn secondary small edit-commands">编辑…</button></div>
+            </div>
+          </section>
           <div class="hw-panel">
             <div class="hw-cell"><span>硬件加速</span><b>CUDA</b><small>自动选择可用设备</small></div>
             <div class="hw-cell"><span>当前显存占用</span><b>6.4 GB</b><small>听写 + 翻译同时加载</small></div>
             <div class="hw-cell"><span>并发任务</span><b>1</b><small>建议保留 1–2 GB 余量</small></div>
           </div>
+        </section>
+
+        <!-- ── Tools ── -->
+        <section class="view" id="view-tools">
+          <div class="page-head">
+            <div><h1>工具</h1><p>视频切片、人声分离、字幕与音频合成都在本机完成；字幕总结通过在线接口生成。</p></div>
+            <div class="head-actions">
+              <button class="btn ghost" id="toolsOpenOutput"><svg><use href="#i-folder"/></svg>输出文件夹</button>
+            </div>
+          </div>
+          <div class="tool-bar">
+            <div class="segmented" id="toolSwitch" role="tablist" aria-label="工具">
+              <button class="active" data-tool="separate" role="tab" aria-selected="true"><svg><use href="#i-wave"/></svg>人声分离</button>
+              <button data-tool="clip" role="tab" aria-selected="false"><svg><use href="#i-scissors"/></svg>视频切片</button>
+              <button data-tool="synth" role="tab" aria-selected="false"><svg><use href="#i-sub"/></svg>字幕合成</button>
+              <button data-tool="audio" role="tab" aria-selected="false"><svg><use href="#i-audio"/></svg>音频合成</button>
+              <button data-tool="summarize" role="tab" aria-selected="false"><svg><use href="#i-text"/></svg>字幕总结</button>
+            </div>
+            <div class="spacer"></div>
+            <span class="count-pill" id="toolModePill">本机处理</span>
+          </div>
+
+          <div class="tool-pane active" id="tool-separate">
+            <div class="tool-grid">
+              <section class="panel">
+                <div class="panel-head"><span class="panel-title">人声分离</span><span class="count-pill">UVR · MDX-Net</span></div>
+                <div class="tool-body">
+                  <button class="tool-files" data-toast="示例原型中未绑定文件选择">
+                    <svg><use href="#i-audio"/></svg><b>拖入音频或视频</b><span>MP4、MKV、WAV、MP3 · 可批量处理</span>
+                    <span class="files"><span>EP02 - 夏の終わり.mkv</span><span>SP - おまけ.wav</span></span>
+                  </button>
+                  <div class="tool-options">
+                    <div class="field">
+                      <label>分离模型</label>
+                      <button class="select" data-toast="示例原型中未展开分离模型列表"><span class="lhs"><span>UVR-MDX-NET-Inst_HQ_3</span></span><svg><use href="#i-chevron"/></svg></button>
+                    </div>
+                    <div class="field">
+                      <label>输出</label>
+                      <button class="select" data-toast="示例原型中未展开输出类型"><span class="lhs"><span>人声 + 伴奏</span></span><svg><use href="#i-chevron"/></svg></button>
+                    </div>
+                  </div>
+                  <div class="tool-actions">
+                    <button class="btn primary" data-toast="已加入分离任务（示例）"><svg><use href="#i-play"/></svg>开始分离</button>
+                    <span class="tool-note">输出 *_vocals.wav 与 *_instrumental.wav</span>
+                  </div>
+                </div>
+              </section>
+              <aside class="panel tool-side">
+                <h3>使用说明</h3>
+                <p>分离结果可直接拖回工作台做听写。去除背景音乐与人声以外的声源，通常能明显减少错字。</p>
+                <div class="kv"><span>模型</span><b>MDX-Net ONNX</b></div>
+                <div class="kv"><span>设备</span><b>CUDA</b></div>
+                <div class="kv"><span>上次使用</span><b>昨天 21:06</b></div>
+                <div style="display:flex;gap:8px;margin-top:10px">
+                  <button class="btn secondary small" style="flex:1" data-toast="已打开分离模型文件夹">打开模型文件夹</button>
+                  <button class="btn ghost small" style="flex:1" data-toast="已重新扫描 UVR 模型（示例）"><svg><use href="#i-refresh"/></svg>刷新列表</button>
+                </div>
+              </aside>
+            </div>
+          </div>
+
+          <div class="tool-pane" id="tool-clip">
+            <div class="tool-grid">
+              <section class="panel">
+                <div class="panel-head"><span class="panel-title">视频切片</span><span class="count-pill">按时间截取</span></div>
+                <div class="tool-body">
+                  <button class="tool-files" data-toast="示例原型中未绑定文件选择">
+                    <svg><use href="#i-film"/></svg><b>拖入视频文件</b><span>MP4、MKV、MOV · 可批量处理</span>
+                    <span class="files"><span>EP02 - 夏の終わり.mkv</span><span>SP - おまけ.mp4</span></span>
+                  </button>
+                  <div class="tool-options">
+                    <div class="field">
+                      <label>开始时间 <span class="hint">时:分:秒.毫秒</span></label>
+                      <input class="tool-input" id="clipStart" type="text" value="00:00:00.000" aria-label="切片开始时间" spellcheck="false">
+                    </div>
+                    <div class="field">
+                      <label>结束时间 <span class="hint">需晚于开始时间</span></label>
+                      <input class="tool-input" id="clipEnd" type="text" value="00:01:30.000" aria-label="切片结束时间" spellcheck="false">
+                    </div>
+                  </div>
+                  <div class="tool-actions">
+                    <button class="btn primary" data-toast="已加入切片任务（示例）"><svg><use href="#i-play"/></svg>开始切片</button>
+                    <span class="tool-note">同一组起止时间会应用到本批次的所有视频。</span>
+                  </div>
+                </div>
+              </section>
+              <aside class="panel tool-side">
+                <h3>时间与输出</h3>
+                <p>按时间点精确截取，适合提取片头、片段或单集高潮。开始与结束时间都包含毫秒。</p>
+                <div class="kv"><span>时间格式</span><b>00:12:30.500</b></div>
+                <div class="kv"><span>编码</span><b>H.264 · AAC</b></div>
+                <div class="kv"><span>输出</span><b>*_clip.mp4</b></div>
+                <button class="btn secondary small" data-toast="已打开切片输出目录">打开输出目录</button>
+              </aside>
+            </div>
+          </div>
+
+          <div class="tool-pane" id="tool-synth">
+            <div class="tool-grid">
+              <section class="panel">
+                <div class="panel-head"><span class="panel-title">字幕合成</span><span class="count-pill">视频 / 音频</span></div>
+                <div class="tool-body">
+                  <div class="tool-options" style="margin-top:0">
+                    <div class="field">
+                      <label>视频文件</label>
+                      <button class="tool-files" data-toast="示例原型中未绑定文件选择">
+                        <svg><use href="#i-film"/></svg><b>选择视频</b><span>MP4、MKV · 可批量，可拖入</span>
+                        <span class="files"><span>EP01.mkv</span><span>EP02.mkv</span></span>
+                      </button>
+                    </div>
+                    <div class="field">
+                      <label>字幕文件</label>
+                      <button class="tool-files" data-toast="示例原型中未绑定文件选择">
+                        <svg><use href="#i-sub"/></svg><b>选择字幕</b><span>SRT · 与视频按顺序一一对应</span>
+                        <span class="files"><span>EP01.zh-CN.srt</span><span>EP02.zh-CN.srt</span></span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="tool-options" style="margin-top:10px">
+                    <div class="field">
+                      <label>字幕类型</label>
+                      <div class="segmented" id="subtitleTypeSegment" role="tablist" aria-label="字幕类型">
+                        <button class="active" data-subtitle="hard" role="tab" aria-selected="true">硬字幕</button>
+                        <button data-subtitle="soft" role="tab" aria-selected="false">软字幕</button>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label>字幕字体</label>
+                      <button class="select" data-toast="示例原型中未展开字体列表"><span class="lhs"><span>苹方-简</span></span><svg><use href="#i-chevron"/></svg></button>
+                    </div>
+                  </div>
+                  <div class="tool-actions">
+                    <button class="btn primary" data-toast="已加入合成任务（示例）"><svg><use href="#i-play"/></svg>开始合成</button>
+                    <span class="tool-note">软字幕封装为轨道，硬字幕会重新编码视频。</span>
+                  </div>
+                </div>
+              </section>
+              <aside class="panel tool-side">
+                <h3>说明</h3>
+                <p>硬字幕会烧进画面，兼容性最好；软字幕保留文本轨道，可随时开关，但部分播放器不显示。</p>
+                <div class="kv"><span>视频编码</span><b>H.264 · CRF 18</b></div>
+                <div class="kv"><span>音频</span><b>直接复制</b></div>
+                <div class="kv"><span>输出</span><b>*_subtitled.mp4</b></div>
+                <button class="btn secondary small" data-toast="已打开合成输出目录">打开输出目录</button>
+              </aside>
+            </div>
+          </div>
+
+          <div class="tool-pane" id="tool-audio">
+            <div class="tool-grid">
+              <section class="panel">
+                <div class="panel-head"><span class="panel-title">音频合成</span><span class="count-pill">音频 + 封面</span></div>
+                <div class="tool-body">
+                  <button class="tool-files" data-toast="示例原型中未绑定文件选择">
+                    <svg><use href="#i-audio"/></svg><b>拖入音频与图片</b><span>WAV、MP3、FLAC + PNG、JPG · 数量需一致</span>
+                    <span class="files"><span>EP01.wav</span><span>EP01.png</span><span>EP02.wav</span><span>EP02.png</span></span>
+                  </button>
+                  <div class="tool-options">
+                    <div class="field">
+                      <label>配对方式</label>
+                      <span class="path-field" style="width:100%;max-width:none">按文件名排序后一一对应</span>
+                    </div>
+                    <div class="field">
+                      <label>本批数量</label>
+                      <span class="path-field" style="width:100%;max-width:none">2 段音频 · 2 张图片</span>
+                    </div>
+                  </div>
+                  <div class="tool-actions">
+                    <button class="btn primary" data-toast="已加入音频合成任务（示例）"><svg><use href="#i-play"/></svg>合成视频</button>
+                    <span class="tool-note">图片会循环铺满音频时长；数量不一致时不会开始。</span>
+                  </div>
+                </div>
+              </section>
+              <aside class="panel tool-side">
+                <h3>使用说明</h3>
+                <p>把每段音频和一张封面图合成为 MP4，适合电台、播客或静态画面的音频节目。</p>
+                <div class="kv"><span>支持音频</span><b>WAV · MP3 · FLAC</b></div>
+                <div class="kv"><span>支持图片</span><b>PNG · JPG · JPEG</b></div>
+                <div class="kv"><span>输出</span><b>*_synth.mp4</b></div>
+                <button class="btn secondary small" data-toast="已打开音频合成输出目录">打开输出目录</button>
+              </aside>
+            </div>
+          </div>
+
+          <div class="tool-pane" id="tool-summarize">
+            <div class="tool-grid">
+              <section class="panel">
+                <div class="panel-head"><span class="panel-title">字幕总结</span><span class="count-pill">纯文本</span></div>
+                <div class="tool-body">
+                  <div class="field">
+                    <label>总结提示词</label>
+                    <textarea class="text-area" id="summaryPrompt" aria-label="总结提示词" placeholder="请为以下内容创建一个带有时间戳（mm:ss 格式）的粗略摘要，不多于 10 个事件。请关注关键事件和重要时刻。"></textarea>
+                  </div>
+                  <button class="tool-files" data-toast="示例原型中未绑定文件选择">
+                    <svg><use href="#i-sub"/></svg><b>拖入字幕或文本文件</b><span>SRT、ASS、VTT、TXT · 每行一个文件</span>
+                    <span class="files"><span>EP01.zh-CN.srt</span></span>
+                  </button>
+                  <div class="tool-options">
+                    <div class="field">
+                      <label>使用模型</label>
+                      <span class="path-field" style="width:100%;max-width:none;font-family:var(--font-ui);font-size:10.5px">跟随在线接口 · gpt-4.1-mini</span>
+                    </div>
+                    <div class="field">
+                      <label>输出</label>
+                      <span class="path-field" style="width:100%;max-width:none;font-family:var(--font-ui);font-size:10.5px">输入文件名.summary.txt</span>
+                    </div>
+                  </div>
+                  <div class="tool-actions">
+                    <button class="btn primary" data-toast="已加入总结任务（示例）"><svg><use href="#i-play"/></svg>开始总结</button>
+                    <span class="tool-note">摘要会保留 mm:ss 时间戳，最多列出 10 个关键事件。</span>
+                  </div>
+                </div>
+              </section>
+              <aside class="panel tool-side">
+                <h3>提示</h3>
+                <p>总结固定使用「设置 → 翻译 → 在线接口」中的地址、模型与 API Key；本地翻译模型不参与总结。</p>
+                <div class="kv"><span>默认模型</span><b>gpt-4.1-mini · 在线</b></div>
+                <div class="kv"><span>输入</span><b>字幕或纯文本</b></div>
+                <div class="kv"><span>输出</span><b>*.summary.txt</b></div>
+                <button class="btn secondary small" data-view-jump="settings:translation">配置在线接口</button>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Logs ── -->
+        <section class="view" id="view-logs">
+          <div class="page-head">
+            <div><h1>日志</h1><p>实时输出、详细日志与失败原因都在这里。</p></div>
+            <div class="head-actions">
+              <button class="btn ghost" data-toast="已打开日志文件">打开日志文件</button>
+              <button class="btn ghost" id="logClear">清空</button>
+            </div>
+          </div>
+          <section class="panel log-panel" aria-label="运行日志">
+            <div class="panel-head">
+              <span class="panel-title">运行日志</span>
+              <span class="count-pill" id="logViewCount">0 行</span>
+              <div class="panel-tools">
+                <select class="mini-select" id="logViewLevel" aria-label="日志级别">
+                  <option value="all">ALL</option>
+                  <option value="info">INFO+</option>
+                  <option value="warn">WARNING+</option>
+                  <option value="error">ERROR+</option>
+                </select>
+                <label style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--label-3)">详细日志 <button class="switch" role="switch" aria-checked="false" aria-label="详细日志"></button></label>
+              </div>
+            </div>
+            <div class="log-stream" id="logViewStream"></div>
+            <div class="table-foot"><span>日志文件：~/Library/Application Support/VoiceTransl/logs/app.log</span><span>最多保留 3 份 · 每份 10 MB</span></div>
+          </section>
+        </section>
+
+        <!-- ── About ── -->
+        <section class="view" id="view-about">
+          <div class="page-head">
+            <div><h1>关于</h1><p>本地优先的视频听写与字幕翻译工具。</p></div>
+            <div class="head-actions"><button class="btn ghost" data-toast="已检查更新：当前为最新版本（示例）"><svg><use href="#i-refresh"/></svg>检查更新</button></div>
+          </div>
+          <section class="panel">
+            <div class="about-hero">
+              <div class="about-mark" aria-hidden="true">聆</div>
+              <div class="about-copy">
+                <h2>聆译 VoiceTransl</h2>
+                <p>把视频、音频与字幕留在本地完成听写、翻译与合成。模型可离线运行，也可以接入兼容 OpenAI 的在线接口。</p>
+                <div class="about-meta"><span>v1.32 原型</span><span>GPL-3.0</span><span>PyQt5 · CrispASR · llama.cpp</span></div>
+              </div>
+              <button class="btn secondary" data-view-jump="workbench">开始使用</button>
+            </div>
+          </section>
+
+          <div class="section-head"><h2>语言</h2><p>切换界面语言，立即生效。</p></div>
+          <section class="panel">
+            <div class="setting-row" style="border-top:0">
+              <div><div class="setting-title">界面语言</div><div class="setting-desc">术语表与提示词不会随界面语言变化。</div></div>
+              <div class="setting-control">
+                <div class="segmented" id="langSegment" aria-label="界面语言">
+                  <button class="active" data-lang="zh" aria-pressed="true">简体中文</button>
+                  <button data-lang="en" aria-pressed="false">English</button>
+                  <button data-lang="ja" aria-pressed="false">日本語</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="section-head"><h2>链接</h2><p>源码、反馈与支持作者。</p></div>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/shinnpuru/VoiceTransl" target="_blank" rel="noreferrer">
+              <span class="ico"><svg><use href="#i-book"/></svg></span>
+              <span><b>GitHub</b><small>源代码、Issues 与版本说明</small></span>
+              <span class="arrow"><svg><use href="#i-external"/></svg></span>
+            </a>
+            <a class="link-card" href="https://space.bilibili.com/36464441" target="_blank" rel="noreferrer">
+              <span class="ico"><svg><use href="#i-play"/></svg></span>
+              <span><b>哔哩哔哩</b><small>教程与更新演示</small></span>
+              <span class="arrow"><svg><use href="#i-external"/></svg></span>
+            </a>
+            <a class="link-card" href="https://afdian.com/a/shinnpuru" target="_blank" rel="noreferrer">
+              <span class="ico"><svg><use href="#i-heart"/></svg></span>
+              <span><b>爱发电</b><small>支持作者</small></span>
+              <span class="arrow"><svg><use href="#i-external"/></svg></span>
+            </a>
+            <a class="link-card" href="https://ko-fi.com/U7U018MISY" target="_blank" rel="noreferrer">
+              <span class="ico"><svg><use href="#i-key"/></svg></span>
+              <span><b>Ko-fi</b><small>Buy the author a coffee</small></span>
+              <span class="arrow"><svg><use href="#i-external"/></svg></span>
+            </a>
+          </div>
+          <div class="note" style="margin:12px 0 0"><svg><use href="#i-info"/></svg><span>聆译基于 VoiceTransl 改进。界面原型仅用于展示交互，不包含真实模型调用。</span></div>
         </section>
 
         <!-- ── Settings ── -->
@@ -893,7 +1389,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 <div class="settings-group-title">启动</div>
                 <div class="setting-row">
                   <div><div class="setting-title">打开时显示</div><div class="setting-desc">下次启动直接回到上次的工作位置。</div></div>
-                  <div class="setting-control"><button class="select"><span class="lhs"><span>上次的工作台</span></span><svg><use href="#i-chevron"/></svg></button></div>
+                  <div class="setting-control"><button class="select" data-toast="示例原型中未展开启动页选项"><span class="lhs"><span>上次的工作台</span></span><svg><use href="#i-chevron"/></svg></button></div>
                 </div>
                 <div class="setting-row">
                   <div><div class="setting-title">关闭主窗口后继续运行</div><div class="setting-desc">任务进行中时保持后台处理，可从菜单栏恢复窗口。</div></div>
@@ -942,7 +1438,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 </div>
                 <div class="setting-row">
                   <div><div class="setting-title">界面语言</div><div class="setting-desc">切换后立即生效，无需重启。</div></div>
-                  <div class="setting-control"><button class="select"><span class="lhs"><span>简体中文</span></span><svg><use href="#i-chevron"/></svg></button></div>
+                  <div class="setting-control"><button class="select" id="settingsLanguage" data-toast="示例原型中未实现整页翻译"><span class="lhs"><span>简体中文</span></span><svg><use href="#i-chevron"/></svg></button></div>
                 </div>
               </div>
 
@@ -969,14 +1465,29 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
               </div>
 
               <div class="settings-pane" id="pane-translation">
+                <div class="settings-group-title">方式</div>
+                <div class="setting-row">
+                  <div><div class="setting-title">翻译方式</div><div class="setting-desc">未选中的一组会暂时停用，任务只使用当前方式。</div></div>
+                  <div class="setting-control">
+                    <div class="segmented" id="translatorMode">
+                      <button class="active" data-translator="local">本地模型</button>
+                      <button data-translator="online">在线接口</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="settings-block is-off" id="onlineTranslatorGroup">
                 <div class="settings-group-title">在线接口</div>
                 <div class="setting-row">
                   <div><div class="setting-title">接口类型</div><div class="setting-desc">任意兼容 OpenAI Chat Completions 的服务。</div></div>
-                  <div class="setting-control"><button class="select"><span class="lhs"><span>OpenAI 兼容</span></span><svg><use href="#i-chevron"/></svg></button></div>
+                  <div class="setting-control"><button class="select" data-toast="示例原型中未展开接口类型"><span class="lhs"><span>OpenAI 兼容</span></span><svg><use href="#i-chevron"/></svg></button></div>
                 </div>
                 <div class="setting-row">
                   <div><div class="setting-title">API 地址</div><div class="setting-desc">留空时使用所选服务商的默认地址。</div></div>
                   <div class="setting-control"><span class="path-field" style="font-family:var(--font-ui);font-size:10.5px">https://api.openai.com/v1</span></div>
+                </div>
+                <div class="setting-row">
+                  <div><div class="setting-title">代理地址</div><div class="setting-desc">访问在线接口时使用；留空为直连。</div></div>
+                  <div class="setting-control"><span class="path-field" style="font-family:var(--font-ui);font-size:10.5px">http://127.0.0.1:7890</span></div>
                 </div>
                 <div class="setting-row">
                   <div><div class="setting-title">API Key</div><div class="setting-desc">保存在系统凭据保险箱，界面默认隐藏。</div></div>
@@ -990,18 +1501,25 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                   <div><div class="setting-title">默认模型</div><div class="setting-desc">用于在线翻译与字幕总结。</div></div>
                   <div class="setting-control"><span class="path-field" style="font-family:var(--font-ui);font-size:10.5px">gpt-4.1-mini</span></div>
                 </div>
+                </div>
+                <div class="settings-block" id="localTranslatorGroup">
                 <div class="settings-group-title">本地翻译</div>
                 <div class="setting-row">
                   <div><div class="setting-title">Sakura 14B</div><div class="setting-desc">日语专精；优先使用 GPU，显存不足时自动回退。</div></div>
-                  <div class="setting-control"><button class="switch" role="switch" aria-checked="true" aria-label="启用本地翻译"></button></div>
+                  <div class="setting-control"><button class="switch" role="switch" aria-checked="true" aria-label="启用本地翻译"></button><button class="btn secondary small" id="testLocal">测试</button></div>
+                </div>
+                <div class="setting-row">
+                  <div><div class="setting-title">GPU 层数</div><div class="setting-desc">100 表示全部卸载到 GPU；显存不足时调低。</div></div>
+                  <div class="setting-control"><div class="stepper" aria-label="GPU 层数"><button data-step="-10" data-min="0" data-max="100" aria-label="减少">−</button><span>100</span><button data-step="10" data-min="0" data-max="100" aria-label="增加">＋</button></div></div>
+                </div>
                 </div>
               </div>
 
               <div class="settings-pane" id="pane-advanced">
                 <div class="settings-group-title">性能</div>
                 <div class="setting-row">
-                  <div><div class="setting-title">并发翻译</div><div class="setting-desc">在线接口建议 2–4；本地模型建议 1。</div></div>
-                  <div class="setting-control"><div class="stepper"><button>−</button><span>1</span><button>＋</button></div></div>
+                  <div><div class="setting-title">并发翻译</div><div class="setting-desc">0 为串行；在线接口建议 2–4，本地模型建议 1。</div></div>
+                  <div class="setting-control"><div class="stepper" aria-label="并发翻译"><button data-step="-1" data-min="0" data-max="20" aria-label="减少">−</button><span>1</span><button data-step="1" data-min="0" data-max="20" aria-label="增加">＋</button></div></div>
                 </div>
                 <div class="setting-row">
                   <div><div class="setting-title">分段处理长音频</div><div class="setting-desc">超过 10 分钟自动切分，降低显存峰值。</div></div>
@@ -1009,7 +1527,12 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 </div>
                 <div class="setting-row">
                   <div><div class="setting-title">字幕字体</div><div class="setting-desc">用于硬字幕合成；软字幕保留字体名称。</div></div>
-                  <div class="setting-control"><button class="select"><span class="lhs"><span>苹方-简</span></span><svg><use href="#i-chevron"/></svg></button></div>
+                  <div class="setting-control"><button class="select" data-toast="示例原型中未展开字体列表"><span class="lhs"><span>苹方-简</span></span><svg><use href="#i-chevron"/></svg></button></div>
+                </div>
+                <div class="settings-group-title">模型行为</div>
+                <div class="setting-row">
+                  <div><div class="setting-title">启用思考链</div><div class="setting-desc">仅对支持的翻译模型生效；会明显增加耗时与显存占用。</div></div>
+                  <div class="setting-control"><button class="switch" role="switch" aria-checked="false" aria-label="启用思考链"></button></div>
                 </div>
                 <div class="settings-group-title">诊断</div>
                 <div class="setting-row">
@@ -1018,7 +1541,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
                 </div>
                 <div class="setting-row">
                   <div><div class="setting-title">命令模板</div><div class="setting-desc">高级用户可调整 CrispASR 与 llama.cpp 的启动参数。</div></div>
-                  <div class="setting-control"><button class="btn secondary small" data-toast="打开独立编辑器（原型未实现）">编辑…</button></div>
+                  <div class="setting-control"><button class="btn secondary small edit-commands">编辑…</button></div>
                 </div>
                 <div class="note"><svg><use href="#i-bolt"/></svg><span>这些设置只影响下一次任务；正在运行的任务会继续使用启动时的配置。</span></div>
               </div>
@@ -1043,7 +1566,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
             </div>
             <span class="spacer"></span>
             <select class="mini-select" id="logLevel" name="logLevel" aria-label="日志级别"><option>ALL</option><option>INFO+</option><option>WARNING+</option><option>ERROR+</option></select>
-            <button class="text-btn" data-toast="日志已清空">清空</button>
+            <button class="text-btn" id="consoleClear">清空</button>
             <button class="text-btn" data-toast="已打开日志文件">打开日志文件</button>
           </div>
           <div class="console-log" id="consoleLog">
@@ -1063,13 +1586,35 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
       <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="linkTitle">
         <div class="sheet-head"><h3 id="linkTitle">从链接导入</h3><button class="icon-btn" id="closeSheet" aria-label="关闭"><svg><use href="#i-x"/></svg></button></div>
         <div class="sheet-body">
-          <p>粘贴 YouTube、Bilibili 或媒体直链。解析完成后会加入队列，不会立即开始。</p>
+          <p>每行粘贴一个 YouTube、Bilibili 链接或 BV 号。解析完成后会加入队列，不会立即开始。</p>
           <label class="sr-only" for="linkInput">视频链接</label>
-          <input class="sheet-input" id="linkInput" name="link" aria-label="视频链接" type="url" placeholder="https://www.bilibili.com/video/BV1…" autocomplete="off">
+          <textarea class="text-area mono" id="linkInput" name="link" aria-label="视频链接" rows="4" placeholder="https://www.bilibili.com/video/BV1…&#10;https://www.youtube.com/watch?v=…" autocomplete="off"></textarea>
         </div>
         <div class="sheet-foot">
           <button class="btn secondary" id="cancelSheet">取消</button>
           <button class="btn primary" id="confirmLink" style="width:auto;padding:0 14px">解析并添加</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- command template sheet -->
+    <div class="overlay" id="commandOverlay" hidden>
+      <div class="sheet" style="width:min(560px,90vw)" role="dialog" aria-modal="true" aria-labelledby="commandTitle">
+        <div class="sheet-head"><h3 id="commandTitle">命令模板</h3><button class="icon-btn" id="closeCommand" aria-label="关闭"><svg><use href="#i-x"/></svg></button></div>
+        <div class="sheet-body">
+          <p>参数会直接传给子进程；不知道用途时请保持默认。CrispASR 支持 $crispasr_executable、$backend、$model_file、$aligner_file、$language、$output_file、$input_file 等占位符。</p>
+          <div class="field">
+            <label for="crispTemplate">CrispASR 参数</label>
+            <textarea class="text-area mono" id="crispTemplate" rows="4" spellcheck="false">$crispasr_executable --backend $backend --model $model_file --aligner-model $aligner_file --force-aligner --language $language --output-srt --output-file $output_file --file $input_file --split-on-punct --vad --vad-model firered --vad-threshold 0.3 --vad-min-silence-duration-ms 200 --max-new-tokens 96 --frequency-penalty 0.8</textarea>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label for="llamaTemplate">llama.cpp 参数</label>
+            <textarea class="text-area mono" id="llamaTemplate" rows="2" spellcheck="false">llama/llama-server -m llama/$model_file -ngl $num_layers --port $port</textarea>
+          </div>
+        </div>
+        <div class="sheet-foot">
+          <button class="btn secondary" id="cancelCommand">取消</button>
+          <button class="btn primary" id="saveCommand" style="width:auto;padding:0 14px">保存</button>
         </div>
       </div>
     </div>
@@ -1140,13 +1685,14 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
 
   /* ── generic toggles ── */
   $$('.switch:not(#transparencySwitch)').forEach(sw => {
+    sw.dataset.bound = "1";
     sw.addEventListener("click", () => sw.setAttribute("aria-checked", sw.getAttribute("aria-checked") === "true" ? "false" : "true"));
   });
   $$('[data-toast]').forEach(el => el.addEventListener("click", e => { e.stopPropagation(); showToast(el.dataset.toast); }));
 
   /* ── navigation ── */
   const titleSub = $(".title-center .title-sub");
-  const navNames = {workbench:"工作台", queue:"任务队列", dictionary:"词典", models:"模型", settings:"设置"};
+  const navNames = {workbench:"工作台", queue:"任务队列", dictionary:"词典", models:"模型", tools:"工具", logs:"日志", settings:"设置", about:"关于"};
   function showView(name) {
     $$(".view").forEach(v => v.classList.toggle("active", v.id === "view-" + name));
     $$(".nav-item[data-view]").forEach(b => {
@@ -1159,7 +1705,11 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     if (window.innerWidth < 860) return;
   }
   $$(".nav-item[data-view]").forEach(b => b.addEventListener("click", () => showView(b.dataset.view)));
-  $$('[data-view-jump]').forEach(b => b.addEventListener("click", () => showView(b.dataset.viewJump)));
+  $$('[data-view-jump]').forEach(b => b.addEventListener("click", () => {
+    const [view, pane] = b.dataset.viewJump.split(":");
+    showView(view);
+    if (pane) document.querySelector(`.settings-nav [data-pane="${pane}"]`)?.click();
+  }));
   $("#settingsBtn").addEventListener("click", () => showView("settings"));
 
   /* ── settings subnav ── */
@@ -1221,6 +1771,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     $("#queueViewList").innerHTML = shown.length ? shown.map(f => queueRow(f, true)).join("") : emptyQueue("没有匹配的任务");
     $("#queueCount").textContent = `${files.length} 个文件`;
     $("#navQueueCount").textContent = files.length;
+    $("#navQueueBadge").textContent = files.length;
     $("#queueViewTotal").textContent = shown.length;
     const done = files.filter(f => f.status === "done").length;
     const wait = files.filter(f => f.status === "waiting").length;
@@ -1245,13 +1796,67 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
   /* queue interactions */
   $("#queueList").addEventListener("click", onQueueClick);
   $("#queueViewList").addEventListener("click", onQueueClick);
+  let openMenu = null;
+  function closeQueueMenu() {
+    if (!openMenu) return;
+    openMenu.remove();
+    openMenu = null;
+    document.removeEventListener("click", onMenuOutside, true);
+  }
+  function onMenuOutside(e) {
+    if (openMenu && !openMenu.contains(e.target) && !e.target.closest("[data-more]")) closeQueueMenu();
+  }
+  function showQueueMenu(anchor, f) {
+    closeQueueMenu();
+    const menu = document.createElement("div");
+    menu.className = "popmenu";
+    const canRetry = f.status === "done" || f.status === "failed";
+    menu.innerHTML = `
+      ${f.status === "done" ? '<button data-act="open"><svg><use href="#i-folder"/></svg>打开输出目录</button>' : ""}
+      ${canRetry ? '<button data-act="retry"><svg><use href="#i-retry"/></svg>重新处理</button>' : ""}
+      ${f.status === "running" ? '<button data-act="stop"><svg><use href="#i-x"/></svg>取消这个任务</button>' : ""}
+      ${f.status !== "running" ? '<hr><button data-act="remove" class="danger"><svg><use href="#i-trash"/></svg>从队列移除</button>' : ""}`;
+    document.body.appendChild(menu);
+    const r = anchor.getBoundingClientRect();
+    menu.style.left = Math.max(10, Math.min(window.innerWidth - menu.offsetWidth - 10, r.right - menu.offsetWidth)) + "px";
+    menu.style.top = Math.min(window.innerHeight - menu.offsetHeight - 10, r.bottom + 5) + "px";
+    menu.addEventListener("click", e => {
+      const btn = e.target.closest("button[data-act]");
+      if (!btn) return;
+      const act = btn.dataset.act;
+      closeQueueMenu();
+      if (act === "open") { showToast("已打开输出目录"); return; }
+      if (act === "retry") {
+        f.status = "waiting"; f.progress = 0; f.stage = 0;
+        renderQueue();
+        logLine("queue", `${escapeHtml(f.name)} · 已重新加入队列`, "info");
+        showToast("已重新加入队列");
+        return;
+      }
+      if (act === "stop") {
+        f.status = "waiting"; f.progress = 0; f.stage = 0;
+        if (activeId === f.id) activeId = null;
+        logLine("warn", `${escapeHtml(f.name)} · 已取消`, "warn");
+        if (running && !files.some(x => x.status === "running")) cancelRun(); else renderQueue();
+        showToast("已取消该任务");
+        return;
+      }
+      if (act === "remove") {
+        files = files.filter(x => x.id !== f.id);
+        renderQueue();
+        showToast("已从队列移除");
+      }
+    });
+    openMenu = menu;
+    setTimeout(() => document.addEventListener("click", onMenuOutside, true), 0);
+  }
   function onQueueClick(e) {
     const row = e.target.closest(".queue-row");
     if (!row) return;
     if (e.target.closest("[data-open]")) { showToast("已打开输出目录"); return; }
     if (e.target.closest("[data-more]")) {
       const f = files.find(x => x.id === Number(row.dataset.id));
-      showToast(`${f.name} · 更多操作（原型）`);
+      if (f) showQueueMenu(e.target.closest("[data-more]"), f);
     }
   }
 
@@ -1294,14 +1899,30 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
   $("#cancelSheet").addEventListener("click", closeSheet);
   $("#linkOverlay").addEventListener("click", e => { if (e.target === $("#linkOverlay")) closeSheet(); });
   $("#confirmLink").addEventListener("click", () => {
-    const url = $("#linkInput").value.trim();
-    if (!url) { $("#linkInput").focus(); return; }
-    let host = "链接视频";
-    try { host = new URL(url).hostname.replace(/^www\./, ""); } catch (_) {}
-    files.push({id: Date.now(), name: host + " · 视频", type: "video", duration: "—", size: "远程", progress: 0, stage: 0, status: "waiting"});
-    renderQueue(); closeSheet(); showToast("链接已加入队列");
-    setConsole("已解析链接 · 等待开始");
+    const urls = $("#linkInput").value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    if (!urls.length) { $("#linkInput").focus(); return; }
+    urls.forEach((url, i) => {
+      let name = "链接视频";
+      if (/^BV[0-9A-Za-z]+$/i.test(url)) name = "Bilibili · " + url;
+      else { try { name = new URL(url).hostname.replace(/^www\./, "") + " · 视频"; } catch (_) {} }
+      if (urls.length > 1) name += " " + (i + 1);
+      files.push({id: Date.now() + i, name, type: "video", duration: "—", size: "远程", progress: 0, stage: 0, status: "waiting"});
+    });
+    renderQueue(); closeSheet(); showToast(`已加入 ${urls.length} 个链接`);
+    setConsole(`已解析 ${urls.length} 个链接 · 等待开始`);
   });
+
+  /* command templates */
+  function openCommands() {
+    $("#commandOverlay").hidden = false;
+    setTimeout(() => $("#crispTemplate").focus(), 60);
+  }
+  function closeCommands() { $("#commandOverlay").hidden = true; }
+  $$(".edit-commands").forEach(b => b.addEventListener("click", openCommands));
+  $("#closeCommand").addEventListener("click", closeCommands);
+  $("#cancelCommand").addEventListener("click", closeCommands);
+  $("#commandOverlay").addEventListener("click", e => { if (e.target === $("#commandOverlay")) closeCommands(); });
+  $("#saveCommand").addEventListener("click", () => { closeCommands(); showToast("命令模板已保存"); });
 
   /* clear with undo */
   $("#clearQueue").addEventListener("click", () => {
@@ -1383,10 +2004,46 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     const t = [now.getHours(), now.getMinutes(), now.getSeconds()].map(n => String(n).padStart(2, "0")).join(":");
     const line = document.createElement("div");
     line.className = "log-line";
-    line.innerHTML = `<time>${t}</time><span class="lv ${cls || "info"}">${level}</span><span class="msg">${msg}</span>`;
+    const lv = cls || "info";
+    line.innerHTML = `<time>${t}</time><span class="lv ${lv}">${level}</span><span class="msg">${msg}</span>`;
+    line.dataset.level = lv;
     $("#consoleLog").appendChild(line);
+    const copy = line.cloneNode(true);
+    $("#logViewStream").appendChild(copy);
     $("#consoleLog").scrollTop = $("#consoleLog").scrollHeight;
+    updateLogCounts();
+    applyLogFilter();
+  }
+  function updateLogCounts() {
     $("#consoleCount").textContent = String($$("#consoleLog .log-line").length);
+    $("#logViewCount").textContent = `${$$("#logViewStream .log-line").length} 行`;
+  }
+  function applyLogFilter() {
+    const mode = $("#logViewLevel").value;
+    $$("#logViewStream .log-line").forEach(line => {
+      const lv = line.dataset.level || "info";
+      const show = mode === "all"
+        || (mode === "info" && lv !== "dim")
+        || (mode === "warn" && (lv === "warn" || lv === "error"))
+        || (mode === "error" && lv === "error");
+      line.style.display = show ? "" : "none";
+    });
+  }
+  function hydrateLogView() {
+    $$("#consoleLog .log-line").forEach(line => {
+      const lv = line.querySelector(".lv");
+      const cls = lv ? Array.from(lv.classList).find(c => c !== "lv") || "info" : "info";
+      const copy = line.cloneNode(true);
+      copy.dataset.level = cls;
+      $("#logViewStream").appendChild(copy);
+    });
+    updateLogCounts();
+  }
+  function clearLogs() {
+    $("#consoleLog").innerHTML = "";
+    $("#logViewStream").innerHTML = "";
+    updateLogCounts();
+    setConsole("日志已清空");
   }
   function setConsole(text) { $("#consoleSummary").textContent = text; }
 
@@ -1412,12 +2069,68 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     $$("#modeSegment button").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-selected", String(x === b)); });
     const mode = b.dataset.mode;
     $("#targetLangField").classList.toggle("disabled", mode === "asr");
+    $("#asrLengthField").classList.toggle("disabled", mode === "mt");
     $("#estimate").textContent = mode === "asr" ? "仅生成原文时间轴 · 不调用翻译模型" : mode === "mt" ? "仅翻译已有字幕 · 跳过听写" : $("#estimate").textContent.replace(/^仅.*$/, "3 个文件 · 预计 18 分钟 · 全部在本地完成");
   }));
   $$("#formatSegment button").forEach(b => b.addEventListener("click", () => $$("#formatSegment button").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-selected", String(x === b)); })));
+  function bindSegment(sel) {
+    $$(sel + " button").forEach(b => b.addEventListener("click", () => {
+      $$(sel + " button").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-selected", String(x === b)); });
+    }));
+  }
+  ["#outputTargetSegment", "#subtitleTypeSegment", "#translatorMode"].forEach(bindSegment);
+  function updateTranslatorGroups() {
+    const online = $("#translatorMode button[data-translator='online']").classList.contains("active");
+    [["#onlineTranslatorGroup", online], ["#localTranslatorGroup", !online]].forEach(([sel, on]) => {
+      const el = $(sel);
+      el.classList.toggle("is-off", !on);
+      if (on) el.removeAttribute("inert"); else el.setAttribute("inert", "");
+    });
+  }
+  updateTranslatorGroups();
+  $$("#translatorMode button").forEach(b => b.addEventListener("click", () => {
+    updateTranslatorGroups();
+    showToast(b.dataset.translator === "local" ? "已切换为本地翻译，在线接口字段暂时停用" : "已切换为在线接口，本地模型字段暂时停用");
+  }));
+
+  /* asr sentence length */
+  const asrLength = $("#asrLength");
+  asrLength.addEventListener("input", () => {
+    const v = Number(asrLength.value);
+    $("#asrLengthVal").textContent = v ? `约 ${v} 字` : "沿用参数";
+  });
+
+  /* tools switch */
+  $$("#toolSwitch button").forEach(b => b.addEventListener("click", () => {
+    $$("#toolSwitch button").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-selected", String(x === b)); });
+    $$(".tool-pane").forEach(p => p.classList.toggle("active", p.id === "tool-" + b.dataset.tool));
+    $("#toolModePill").textContent = b.dataset.tool === "summarize" ? "在线接口" : "本机处理";
+  }));
+
+  /* dictionary tabs */
+  $$("#dictTabs button").forEach(b => b.addEventListener("click", () => {
+    $$("#dictTabs button").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-selected", String(x === b)); });
+    $$(".dict-pane").forEach(p => p.classList.toggle("active", p.id === "dict-" + b.dataset.dict));
+  }));
+  $$("#promptMode button").forEach(b => b.addEventListener("click", () => {
+    $$("#promptMode button").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-selected", String(x === b)); });
+    showToast("提示词模式：" + b.textContent.trim());
+  }));
+
+  /* language */
+  $$("#langSegment button").forEach(b => b.addEventListener("click", () => {
+    $$("#langSegment button").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-pressed", String(x === b)); });
+    const names = {zh:"简体中文", en:"English", ja:"日本語"};
+    const label = $("#settingsLanguage .lhs span");
+    if (label) label.textContent = names[b.dataset.lang];
+    showToast("界面语言：" + names[b.dataset.lang] + "（原型仅演示）");
+  }));
+
   $$(".stepper button").forEach(b => b.addEventListener("click", () => {
     const span = b.parentElement.querySelector("span");
-    const next = Math.max(0, Math.min(8, Number(span.textContent) + Number(b.dataset.step || 1)));
+    const min = b.dataset.min !== undefined ? Number(b.dataset.min) : 0;
+    const max = b.dataset.max !== undefined ? Number(b.dataset.max) : 8;
+    const next = Math.max(min, Math.min(max, Number(span.textContent) + Number(b.dataset.step || 1)));
     span.textContent = next;
   }));
 
@@ -1448,11 +2161,19 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
   });
 
   /* settings actions */
-  $("#testApi").addEventListener("click", e => { e.currentTarget.textContent = "测试中…"; setTimeout(() => { e.currentTarget.textContent = "测试连接"; showToast("连接正常 · 142 ms"); }, 900); });
+  $("#testApi").addEventListener("click", e => { e.currentTarget.textContent = "测试中…"; setTimeout(() => { e.currentTarget.textContent = "测试连接"; showToast("连接正常 · 发现 24 个可用模型（示例）"); }, 900); });
+  $("#testLocal").addEventListener("click", e => { const b = e.currentTarget; b.textContent = "测试中…"; setTimeout(() => { b.textContent = "测试"; showToast("本地模型响应正常 · 8.4× 实时"); }, 900); });
+  $("#refreshModels").addEventListener("click", () => showToast("模型列表已刷新（示例）"));
   $("#revealKey").addEventListener("click", () => { const k = $("#apiKey"); k.type = k.type === "password" ? "text" : "password"; });
   $("#resetSettings").addEventListener("click", () => showToast("已恢复默认设置（示例）"));
   $("#openOutput").addEventListener("click", () => showToast("已打开输出目录"));
   $("#openOutput2").addEventListener("click", () => showToast("已打开输出目录"));
+  $("#toolsOpenOutput").addEventListener("click", () => showToast("已打开输出目录"));
+  $("#changeOutput").addEventListener("click", () => showToast("选择输出目录（示例）"));
+  $("#cleanCache").addEventListener("click", () => showToast("已清理 1.8 GB 中间文件（示例）"));
+  $("#logClear").addEventListener("click", clearLogs);
+  $("#consoleClear").addEventListener("click", clearLogs);
+  $("#logViewLevel").addEventListener("change", applyLogFilter);
   $$(".test-model").forEach(b => b.addEventListener("click", () => { const old = b.textContent; b.textContent = "测试中…"; b.disabled = true; setTimeout(() => { b.textContent = old; b.disabled = false; showToast("模型响应正常 · 8.4× 实时"); }, 900); }));
 
   /* search / shortcuts */
@@ -1462,7 +2183,7 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     if (meta && e.key.toLowerCase() === "k") { e.preventDefault(); showView("workbench"); $("#globalSearch").focus(); }
     if (meta && e.key.toLowerCase() === "l") { e.preventDefault(); toggleConsole(); }
     if (meta && e.key === ",") { e.preventDefault(); showView("settings"); }
-    if (e.key === "Escape") { closeSheet(); hideToast(); }
+    if (e.key === "Escape") { closeSheet(); closeCommands(); hideToast(); closeQueueMenu(); }
   });
   $("#globalSearch").addEventListener("keydown", e => {
     if (e.key === "Enter") {
@@ -1471,8 +2192,9 @@ html[data-theme="dark"] .segmented button.active{background:#4a4a4c}
     }
   });
 
-  /* initial console line count */
-  $("#consoleCount").textContent = String($$("#consoleLog .log-line").length);
+  /* initial log view */
+  hydrateLogView();
+  applyLogFilter();
 })();
 </script>
 </body>
