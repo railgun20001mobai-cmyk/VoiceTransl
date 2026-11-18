@@ -2,11 +2,11 @@
 
 
 a = Analysis(
-    ['app.py'],
+    ['webmain.py'],
     pathex=[],
     binaries=[],
-    datas=[('icon.png', '.'), ('avatar.png', '.'), ('assets', 'assets'), ('project', 'project'), ('plugins', 'plugins'), ('translation_guidelines','translation_guidelines')],
-    hiddenimports=['tiktoken_ext.openai_public', 'tiktoken_ext'],
+    datas=[('icon.png', '.'), ('avatar.png', '.'), ('assets', 'assets'), ('project', 'project'), ('plugins', 'plugins'), ('translation_guidelines','translation_guidelines'), ('webui/web', 'webui/web')],
+    hiddenimports=['tiktoken_ext.openai_public', 'tiktoken_ext', 'PyQt5.QtWebEngineWidgets', 'PyQt5.QtWebChannel', 'webui.shell', 'webui.bridge'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -38,6 +38,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='VoiceTransl.ico',
 )
 coll = COLLECT(
     exe,

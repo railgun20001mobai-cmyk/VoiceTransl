@@ -1275,8 +1275,9 @@ class MainWindow(QMainWindow):
     def default_output_dir() -> str:
         return str(Path.cwd() / 'project' / 'cache')
 
-    def __init__(self):
+    def __init__(self, web_mode=False):
         super().__init__()
+        self._web_mode = web_mode
         self.msg_queue = UIMessageQueue(LOG_PATH)
         self.thread = None
         self.worker = None
@@ -1294,19 +1295,23 @@ class MainWindow(QMainWindow):
         self._load_ui_language()
         self.setWindowTitle(_("window_title"))
         self.setWindowIcon(QtGui.QIcon('icon.png'))
-        self.init_system_tray()
+        if not self._web_mode:
+            self.init_system_tray()
         self.status.connect(lambda x: self.setWindowTitle(f"{_('window_title')} - {x}"))
         self.resize(800, 600)
-        self.splashScreen = SplashScreen(self.windowIcon(), self)
-        self.splashScreen.setIconSize(QSize(102, 102))
-        self.show()
+        if not self._web_mode:
+            self.splashScreen = SplashScreen(self.windowIcon(), self)
+            self.splashScreen.setIconSize(QSize(102, 102))
+            self.show()
         self.initUI()
-        saved_geometry = self._ui_settings.value('window/geometry')
-        if saved_geometry:
-            self.restoreGeometry(saved_geometry)
+        if not self._web_mode:
+            saved_geometry = self._ui_settings.value('window/geometry')
+            if saved_geometry:
+                self.restoreGeometry(saved_geometry)
         self._log_level_filter = 'ALL'  # 日志级别过滤默认值
         self.setup_timer()
-        self.splashScreen.finish()
+        if not self._web_mode:
+            self.splashScreen.finish()
 
     def _load_ui_language(self):
         """从 gui_settings.yaml 加载已保存的界面语言，在任何 _() 调用之前执行"""
@@ -2216,7 +2221,8 @@ class MainWindow(QMainWindow):
     def setup_timer(self):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._consume_messages)
-        self.timer.start(1000)
+        if not getattr(self, '_web_mode', False):
+            self.timer.start(1000)
 
     def init_system_tray(self):
         if not QSystemTrayIcon.isSystemTrayAvailable():
@@ -3334,7 +3340,8 @@ class MainWindow(QMainWindow):
         self._start_worker_task('summarize', self.run_summarize_button)
 
     def show_model_selection_dialog(self, models):
-        dialog = QDialog(self)
+        parent = getattr(self, '_web_dialog_parent', None) or self
+        dialog = QDialog(parent)
         dialog.setWindowTitle(_("dialog_select_model_title"))
         dialog.setMinimumWidth(400)
         layout = QVBoxLayout(dialog)
